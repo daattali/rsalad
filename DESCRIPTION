@@ -1,8 +1,16 @@
 Package: rdeanutil
-Title: What the package does (one line)
-Version: 0.1
-Authors@R: "First Last <first.last@example.com> [aut, cre]"
-Description: What the package does (one paragraph)
-Depends: R (>= 3.1.0)
-License: What license is it under?
+Title: Collection of utility functions for R
+Version: 0.0.0.9000
+Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
+Description: This package provides a collections of useful R functions that
+    I've found myself reusing often in many different projects.  There isn't
+    really a common specific theme to all these functions, but they are all
+    related to either manipulating data frames or helping with productivity.
+Depends:
+    R (>= 3.1.0)
+Imports:
+    dplyr (>= 0.3.0)
+Suggests:
+    ggplot2
+License: MIT + file LICENSE
 LazyData: true
