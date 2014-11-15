@@ -1,3 +1,4 @@
+#' @export
 plotCount <- function(x) {
 	if (!requireNamespace("ggplot2", quietly = TRUE)) {
 		stop("`ggplot2` needed for this function to work. Please install it.",

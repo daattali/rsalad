@@ -1,3 +1,4 @@
+#' @export
 dfCount <- function(df, col, sort = TRUE) {
 	# Check parameters
 	stopifnot(
@@ -16,22 +17,22 @@ dfCount <- function(df, col, sort = TRUE) {
 		df <-
 			df %>%
 			dplyr::arrange(desc(total))
-		df[, 1] <- factor(first(df), first(df))
+		df[, 1] <- factor(dplyr::first(df), dplyr::first(df))
 	}
 	df
 }
 
-dfCount_ <- function(df, ..., sort = TRUE) {
-	dfCount(df, dotsToChar(...), sort)
-}
-
-dfCount(nycflights13::flights, "dest")
-dfCount(nycflights13::flights, "dest", sort = FALSE)
-dfCount_(nycflights13::flights, dest)
-
-
-
-str((dfCount(nycflights13::flights, "dest") %>% head)
+# dfCount_ <- function(df, ..., sort = TRUE) {
+# 	dfCount(df, dotsToChar(...), sort)
+# }
+#
+# dfCount(nycflights13::flights, "dest")
+# dfCount(nycflights13::flights, "dest", sort = FALSE)
+# dfCount_(nycflights13::flights, dest)
+#
+#
+#
+# str((dfCount(nycflights13::flights, "dest") %>% head)
 
 #plot above function?
 

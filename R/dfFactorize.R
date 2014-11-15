@@ -1,3 +1,4 @@
+#' @export
 dfFactorize <- function(df, only = c(), ignore = c()) {
 	# Check parameters
 	stopifnot(
@@ -22,6 +23,6 @@ dfFactorize <- function(df, only = c(), ignore = c()) {
 	df
 }
 
-df <- data.frame(a=1:3,b=letters[1:3],c=LETTERS[1:3], stringsAsFactors = F)
-str(dfFactorize(df))
-str(dfFactorize(df, only=c("a"),ignore=c()))
+# df <- data.frame(a=1:3,b=letters[1:3],c=LETTERS[1:3], stringsAsFactors = F)
+# str(dfFactorize(df))
+# str(dfFactorize(df, only=c("a"),ignore=c()))
