@@ -2,7 +2,7 @@
 	notIn(x, y)
 }
 notIn <- function(x, y) {
-	assertthat::assert_that(is.vector(x) & is.vector(y))
+	stopifnot(is.vector(x) && is.vector(y))
 	!(x %in% y)
 }
 df <- data.frame(a = 1:5, b = 1:5)

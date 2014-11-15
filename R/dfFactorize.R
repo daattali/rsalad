@@ -1,5 +1,5 @@
 dfFactorize <- function(df, only = c(), ignore = c()) {
-	# Pre-condition assertions
+	# Check parameters
 	stopifnot(
 		is.data.frame(df),
 		length(only) == 0 || length(ignore) == 0,
@@ -19,7 +19,7 @@ dfFactorize <- function(df, only = c(), ignore = c()) {
 	# Convert specific columns to factors
 	df[colsConvert] <- lapply(df[colsConvert], as.factor)
 
-	return(df)
+	df
 }
 
 df <- data.frame(a=1:3,b=letters[1:3],c=LETTERS[1:3], stringsAsFactors = F)

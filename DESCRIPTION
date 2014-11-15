@@ -11,6 +11,6 @@ Depends:
 Imports:
     dplyr (>= 0.3.0)
 Suggests:
-    ggplot2
+    ggplot2 (>= 1.0.0)
 License: MIT + file LICENSE
 LazyData: true

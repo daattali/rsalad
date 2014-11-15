@@ -1,0 +1,44 @@
+dfCount <- function(df, col, sort = TRUE) {
+	# Check parameters
+	stopifnot(
+		is.data.frame(df),
+		length(col) == 1,
+		col %in% colnames(df),
+		is.bool(sort)
+	)
+
+	df <-
+		df %>%
+		dplyr::group_by_(col) %>%
+		dplyr::summarise(total = n()) %>%
+		dplyr::ungroup()
+	if (sort) {
+		df <-
+			df %>%
+			dplyr::arrange(desc(total))
+		df[, 1] <- factor(first(df), first(df))
+	}
+	df
+}
+
+dfCount_ <- function(df, ..., sort = TRUE) {
+	dfCount(df, dotsToChar(...), sort)
+}
+
+dfCount(nycflights13::flights, "dest")
+dfCount(nycflights13::flights, "dest", sort = FALSE)
+dfCount_(nycflights13::flights, dest)
+
+
+
+str((dfCount(nycflights13::flights, "dest") %>% head)
+
+#plot above function?
+
+#similar to above function but counitng how many unique COUNTRIES per continent
+
+# sum of a column?
+
+# performs mcuh better than table() (which still needs to be converted to data.frame and arranged) when there are many possible values. using "nycflights13::flights" dataset, counting carriers or cities is not that much faster (but still faster), but counting distance for example is much faster
+# note: the only visible difernce i can tell so far isthat table() doesnt count NA and I do
+# m <- microbenchmark( a(flights, "dep_time"), (table(flights$dep_time)), times=3)
