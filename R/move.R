@@ -1,6 +1,8 @@
+#' @export
 moveFront <- function(df, cols) {
 	bindDfEnds(df, cols, 1)
 }
+#' @export
 moveBack <- function(df, cols) {
 	bindDfEnds(df, cols, -1)
 }
