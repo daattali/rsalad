@@ -1,11 +1,11 @@
-Package: rdeanutil
-Title: Collection of utility functions for R
-Version: 0.0.0.9000
+Package: rsalad
+Title: A mix of commonly useful R functions, mostly for data.frames and ggplot2
+Version: 0.0.0.9001
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
 Description: This package provides a collections of useful R functions that
-    I've found myself reusing often in many different projects.  There isn't
-    really a common specific theme to all these functions, but they are all
-    related to either manipulating data frames or helping with productivity.
+    I've found myself reusing often in many different projects.  Whill there
+    isn't a true common specific theme to all these functions, they are mostly
+    either for manipulating data frames or improving ggplot2 plots.
 Depends:
     R (>= 3.1.0)
 Imports:
