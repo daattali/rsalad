@@ -14,6 +14,7 @@ Imports:
 Suggests:
     dplyr (>= 0.3.0),
     ggplot2 (>= 1.0.0),
+    nycflights13 (>= 0.1),
     testthat (>= 0.9.1)
 License: MIT + file LICENSE
 LazyData: true

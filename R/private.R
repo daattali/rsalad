@@ -12,6 +12,8 @@ is.string <- function(x) {
 }
 
 # Convert a ... argument into a character vector
+# TODO(daattali) look into the lazyeval package and understand better how
+#   non-standard evaluation works
 dotsToChar <- function(...) {
 	as.character(substitute(list(...)))[-1L]
 }
