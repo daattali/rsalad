@@ -20,7 +20,7 @@ A logical vector of the same length as \code{x}.
   in \code{y}, and \code{TRUE} otherwise.
 }
 \description{
-Determine if values in the first argument don't exist in the second argument
+Determine if values in the first argument don't exist in the second argument.
 }
 \details{
 \code{\%nin\%} is the functional inverse of \code{\%in\%}.

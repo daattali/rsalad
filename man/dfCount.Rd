@@ -61,4 +61,7 @@ if (requireNamespace("nycflights13::", quietly = TRUE)) {
   dfCount(flights, "dest", name = "flights")
 }
 }
+\seealso{
+\code{\link{plotCount}}
+}
 

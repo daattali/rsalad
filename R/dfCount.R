@@ -42,6 +42,10 @@
 #'   dfCount(flights, "dest", sort = FALSE)
 #'   dfCount(flights, "dest", name = "flights")
 #' }
+#'
+#' dfCount(infert, "education")
+#' dfCount(infert, "education", sort = FALSE)
+#' data.frame(table(infert$education))
 #' @seealso \code{\link{plotCount}}
 dfCount <- function(df, col, sort = TRUE, name = "total") {
 	if (!requireNamespace("dplyr", quietly = TRUE)) {
