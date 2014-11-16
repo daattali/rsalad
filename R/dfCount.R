@@ -1,5 +1,10 @@
 #' @export
 dfCount <- function(df, col, sort = TRUE, name = "total") {
+	if (!requireNamespace("dplyr", quietly = TRUE)) {
+		stop("`dplyr` needed for this function to work. Please install it.",
+				 call. = FALSE)
+	}
+
 	# Check parameters
 	stopifnot(
 		is.data.frame(df),
