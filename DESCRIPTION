@@ -1,6 +1,6 @@
 Package: rsalad
 Title: A mix of commonly useful R functions, mostly for data.frames and ggplot2
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
 Description: This package provides a collection of useful R functions that
     I've found myself reusing often in many different projects.  While there
@@ -14,7 +14,9 @@ Imports:
 Suggests:
     dplyr (>= 0.3.0),
     ggplot2 (>= 1.0.0),
+    knitr (>= 1.7),
     nycflights13 (>= 0.1),
     testthat (>= 0.9.1)
 License: MIT + file LICENSE
 LazyData: true
+VignetteBuilder: knitr
