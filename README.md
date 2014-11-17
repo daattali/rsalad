@@ -35,8 +35,8 @@ vignette("overview", "rsalad")
 Alternatively, see the help file for any specific function for a complete
 detailed explanation of the function. For example `?rsalad::moveFront`.
 
-Below is a very brief introduction to the functions in rsalad. (the package
-must first be loaded for the examples to work `library(rsalad)`)
+Below is a very brief introduction to the functions in rsalad. The package
+must first be loaded for the examples to work `library("rsalad")`.
 
 ### `%nin%` and `notIn()`
 Determine if values in the first argument don't exist in the second argument.
@@ -94,7 +94,7 @@ plotCount(countDat)
 ggplot2 plots.
 
 ```
-library(ggplot2)
+library("ggplot2")
 df <- data.frame(x = paste("letter", LETTERS, sep = "_"),
                  y = seq(length(LETTERS)))
 (p <- ggplot(df, aes(x, y)) + geom_point())
