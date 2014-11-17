@@ -42,13 +42,13 @@ The \code{dplyr} package is required for this function.
 
 This function performs much faster than its equivalent \code{table} call on
 large datasets, even though the \code{table} function does not sort the
-results.
+results. The main speed boost is due to the fact that `dplyr` is used.
 
 For example, with the following data.frame
 
 \code{df <- data.frame(a = rep(1:50, 100000))}
 
-running \code{dfCount(df, "a")} on my machine 100 times is, on average, 10x
+running \code{dfCount(df, "a")} on my machine 50 times is, on average, 10x
 faster than \code{table(df$a)} (217 milliseconds vs 2112 milliseconds).
 
 See the package vignette for more benchmarking analysis.
@@ -60,6 +60,10 @@ if (requireNamespace("nycflights13::", quietly = TRUE)) {
   dfCount(flights, "dest", sort = FALSE)
   dfCount(flights, "dest", name = "flights")
 }
+
+dfCount(infert, "education")
+dfCount(infert, "education", sort = FALSE)
+data.frame(table(infert$education))
 }
 \seealso{
 \code{\link{plotCount}}

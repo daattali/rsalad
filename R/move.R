@@ -70,8 +70,19 @@ bindDfEnds <- function(df, cols, dir = 1) {
 		cols %in% colnames(df)
 	)
 
-	cbind(
-		df %>% dplyr::select(dir * one_of(cols)),
-		df %>% dplyr::select(-dir * one_of(cols))
-	)
+	isTbl <- dplyr::is.tbl(df)
+
+	# Bind together the two parts of the data.frame
+	df <-
+		cbind(
+			df %>% dplyr::select(dir * one_of(cols)),
+			df %>% dplyr::select(-dir * one_of(cols))
+		)
+
+	# If the input was a tbl_df, make sure to return that object too
+	if (isTbl) {
+		df <- dplyr::tbl_df(df)
+	}
+
+	df
 }

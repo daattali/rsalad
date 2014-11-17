@@ -1,11 +1,11 @@
 Package: rsalad
-Title: A mix of commonly useful R functions, mostly for data.frames and ggplot2
-Version: 0.0.0.9002
+Title: A mix of useful R functions that are good for you
+Version: 0.0.1
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
-Description: This package provides a collection of useful R functions that
-    I've found myself reusing often in many different projects.  While there
-    isn't a common specific theme to all these functions, they are mostly
-    either for manipulating data frames or improving ggplot2 plots.
+Description: This package provides a collection of useful R functions, that
+    I've found myself reusing often.  While there isn't a common specific theme
+    to all these functions, they are mostly either for manipulating data frames
+    or improving ggplot2 plots.
 URL: https://github.com/daattali/rsalad
 Depends:
     R (>= 3.1.0)
@@ -15,6 +15,7 @@ Suggests:
     dplyr (>= 0.3.0),
     ggplot2 (>= 1.0.0),
     knitr (>= 1.7),
+    microbenchmark (>= 1.4),
     nycflights13 (>= 0.1),
     testthat (>= 0.9.1)
 License: MIT + file LICENSE

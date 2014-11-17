@@ -1,58 +1,328 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Package rsalad"
+author: "Dean Attali"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Package rsalad}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
-
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
- 	
-Note the various macros within the `vignette` setion of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r setup, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(tidy = FALSE, comment = "#>")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## Overview
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+`rsalad`, like any other salad, is a mixture of different healthy vegetables 
+that you should be having frequently and that can make your life much better. 
+Except that instead of vegetables, `rsalad` provides you with R functions.  
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+This package was born as a result of me constantly breaking the DRY principle
+by copy-and-pasting functions from old projects into new ones.  Hence, the
+functions in `rsalad` do not have a single common topic, but they are all 
+either related to manipulating data.frames, improving ggplot2 plots, or general
+productivity utilities.
 
-## More Examples
+## Analysis
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+This vignette will introduce all the families of functions available in
+`rsalad`, but will not dive too deeply into any one specific function.  To
+demonstrate all the functionality, we will use the `nycflights13::flights`
+dataset (information about ~335k flights departing from NYC) to visualize the
+50 most common destinations of flights out of NYC.  While the analysis is not 
+particularly exciting, it will show how to use `rsalad` proficiently.
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+### Load packages
+
+Before beginning any analysis using `rsalad`, the first step is to load the
+package. It is strongly recommended to also have the `plyr` and `ggplot2`
+packages installed, since they are used in many of the `rsalad` functions. 
+
+```{r load-lib, message = FALSE, warning = FALSE}
+library(rsalad)
+library(dplyr)
+library(ggplot2)
 ```
 
-Also a quote using `>`:
+### Load data
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+First step is to load the `flights` dataset and have a peak at how it looks
+
+```{r load-data, results = "hide"}
+fDat <- nycflights13::flights
+head(fDat)
+```
+
+```{r show-data, echo = FALSE, results = 'asis'}
+knitr::kable(head(fDat))
+```
+
+### `%nin%` operator and `notIn()`
+
+Let's say that for some reason we aren't interested in flights operated by
+United Airlines (UA), Delta Airlines (DL) and American Airlines (AA). To choose
+only carrier that are **not** part of that group, we can use the `%nin%`
+operator, which is also aliased to `notIn()`.
+
+```{r show-do-notIn, results = "hold"}
+fDat2 <- fDat %>% filter(carrier %nin% c("UA", "DL", "AA"))
+allCarriers <- fDat %>% dplyr::select(carrier) %>% first %>% unique
+myCarriers <- fDat2 %>% dplyr::select(carrier) %>% first %>% unique
+
+paste0("All carriers: ", paste(allCarriers, collapse = ", "))
+paste0("My carriers: ", paste(myCarriers, collapse = ", "))
+```
+
+The `%nin%` operator is simply the negation of `%in%`, but can be a handy
+shortcut. `lhs %nin% rhs` is equivalent to `notIn(lhs, rhs)`.  The following
+code would have the same result as above:
+
+```{r show-notIn-alias}
+fDat2_2 <- fDat %>% filter(notIn(carrier, c("UA", "DL", "AA")))
+identical(fDat2, fDat2_2)
+```
+
+For more information, see `?rsalad::notIn`.
+
+### `move` functions: move columns to front/back
+
+The `move` family of functions can be used to rearrange the column order of a
+data.frame by moving specific columns to be the first (`moveFront()` and
+`moveFront_()`) or last (`moveBack()` and `moveBack_()`) columns.  
+The order in which the columns are passed in as arguments determines the order
+in which the columns will be in the resulting data.frame, regardless of whether
+the columns are moved to the front or back.  
+
+These functions support non-standard evaulation (see function documentation
+for more details).
+
+For brevity, we will only keep a few columns in the data.
+
+```{r select-cols, results = "hide"}
+fDat3 <- fDat2 %>% dplyr::select(carrier, flight, origin, dest)
+head(fDat3)
+```
+
+```{r show-data-3, echo = FALSE, results = 'asis'}
+knitr::kable(head(fDat3))
+```
+
+Now let's rearrange the columns to be in this order: dest, origin, carrier, 
+flight.
+
+```{r move, results = "hide"}
+fDat4 <- fDat3 %>% moveFront(dest, origin)
+head(fDat4)
+```
+
+```{r show-data-4, echo = FALSE, results = 'asis'}
+knitr::kable(head(fDat4))
+```
+
+The same result can be achieved in different ways using other `move` functions.
+```{r move-alias}
+fDat4_2 <- fDat3 %>% moveFront_(c("dest", "origin"))
+fDat4_3 <- fDat3 %>% moveBack(carrier, flight) %>% moveFront(dest)
+
+all(identical(fDat4, fDat4_2), identical(fDat4, fDat4_3))
+```
+
+For more information, see `?rsalad::move`.
+
+### `dfFactorize()`: convert data.frame columns to factors
+
+Sometimes you want to convert all the character columns of a data.frame
+into factors.  In our current data, we have three character variables
+(dest, origin, carrier), but they all make more sense as factors.  Rather
+than converting each column manually, we can use the `dfFactorize()` function.  
+
+```{r do-dfFactorize}
+str(fDat4)
+fDat5 <- fDat4 %>% dfFactorize()
+str(fDat5)
+```
+
+As you can see, calling `dfFactorize()` with no additional arguments converted
+all potential factor columns into factors. Note that the integer column was
+unaffected.  
+
+By default, all character columns are coerced to factors, but we can also
+specify which columns to convert or which columns to leave unaffected.
+
+```{r dfFactorize-examples}
+str(fDat4 %>% dfFactorize(only = "origin"))
+str(fDat4 %>% dfFactorize(ignore = c("origin", "dest")))
+```
+
+For more information, see `?rsalad::dfFactorize`.
+
+### `dfCount()`: count number of rows per group
+
+Our goal is to see which destinations were the most common, so the next step
+is to count how many observations we have for each destination.  This can be
+achieved using the base R function `table()`:
+
+```{r do-table}
+head(table(fDat5$dest))
+```
+
+However, this is such a common task for me that I was not happy with the result
+`table()` gives.  
+Specifically:  
+
+- `table()` returns a `table` object rather than the much more uesful
+`data.frame`.  
+- `table()` does not sort the resulting counts.  
+- `table()` performs very slowly on large datasets, especially if the data is
+numeric (see Performance section below).  
+
+The `dfCount()` function provides an alternative way to count the data in a
+data.frame column in an efficient way, sorts the results, and returns a
+data.frame.  
+Let's use dfCount to count the number of flights for each destination.
+
+```{r do-dfCount, results = "hide"}
+countDat <- fDat5 %>% dfCount("dest")
+head(countDat)
+```
+
+```{r show-count-data, echo = FALSE, results = 'asis'}
+knitr::kable(head(countDat))
+```
+
+Now our count data is in a nice data.frame format that can play nicely with
+other data.frames, and can be easily merged/joined into the original dataset
+if we wanted to.
+
+Since we only want to see the 50 most common destinations, and the count data
+is sorted in descending order, we can now easily retain only the 50 destinations
+that appeared the most.
+
+```{r keep-50}
+countDat2 <- slice(countDat, 1:50)
+```
+
+For more information, see `?rsalad::dfCount`.
+
+### `plotCount()`: plot count data
+
+The final step after obtaining the data we want is to visualize it effectively.
+
+The `plotCount()` function is a convenient way to plot count data.  It is meant
+to be called with the output of `dfCount()`, but any data.frame with a similar
+structure (two columns; first column are distinct values; second column is
+integer counts) will work.  
+
+This is similar to how `barplot()` can be used to visualize the results of
+`table()`. Since `dfCount()` is meant as a replacement for `table()`,
+`plotCount()` can also accept the output from a `table()` call, though it is 
+strongly recommended to use `dfCount()`.  
+
+Note that `ggplot2` is the graphics package used to generate these plots.
+
+```{r show-plotCount, fig.width = 8}
+plotCount(countDat2)
+```
+
+For more information, see `?rsalad::plotCount`.
+
+### `ggplotLayers` functions: useful ggplot2 layers
+
+`rsalad` provides a few functions that add useful layers to `ggplot2` plots.
+The plot above is too cluttered, and there are two specific functions we can
+use to make it a little better.
+
+`rotateTextX()` causes the labels on the x axis to be rotated so that they are
+vertical, which is often useful when there are many overlapping labels along
+the x axis, as we have here.
+
+```{r rotateTextX, fig.width = 8}
+plotCount(countDat2) + rotateTextX()
+```
+
+`removeGrid()` is used to always remove all the minor gridlines, and optinally 
+also the major x/y gridlines (both by default).  In our case, I would like to
+strip the minor y gridlines along with the major x gridlins, so I can use either
+`removeGrid(x = TRUE, y = FALSE)` or, equivalently, `removeGridX()`.
+
+```{r removeGrid, fig.width = 8}
+plotCount(countDat2) + rotateTextX() + removeGridX()
+```
+
+This figure looks much better!
+
+Notice how these functions can be added to a ggplot2 plot object just like any
+other native ggplot2 layer.
+
+For more information, see `?rsalad::ggplotLayers`.
+
+## Other functions
+
+#### `tolowerfirst()`: convert first character to lower case
+
+`rsalad` provides another function that can sometimes become handy.
+`tolowerfirst()` can be used to convert the first letter of a string (or a 
+vector of strings) into lower case. This can be useful, for example, when 
+columns of a data.frame do not follow a consistent capitalization and you would 
+like to lower-case all first letters.
+
+```{r show-tolowerfirst}
+df <- data.frame(StudentName = character(0), ExamGrade = numeric(0))
+(colnames(df) <- tolowerfirst(colnames(df)))
+```
+
+For more information, see `?rsalad::tolowerfirst`.
+
+## Performance of `dfCount()`
+
+After some basic testing (not extremely thorough), I believe that `dfCount()`
+performs much faster than its equivalent `table()` on large datasets, especially
+when the data is numeric.  The analysis was done with the `microbenchmark`
+package to compare the two functions on a few different datasets.
+
+```{r dfCount-performance, results = "hide"}
+library(microbenchmark)
+
+# Prepare all the datasets to test on
+fDat <- nycflights13::flights
+largeIntDat <- data.frame(col = rep(1:25, 100000))
+largeCharDat <- data.frame(col = rep(letters[1:25], 100000))
+smallDat <- data.frame(col = rep(1:25, 100))
+
+# Run the benchmarking
+m <- 
+	microbenchmark(
+	  dfCount(fDat, "day"), table(fDat$day),
+	  dfCount(fDat, "dest"), table(fDat$dest),
+	  dfCount(largeIntDat, "col"), table(largeIntDat$col),
+	  dfCount(largeCharDat, "col"), table(largeCharDat$col), 
+	  dfCount(smallDat, "col"), table(smallDat$col),
+	  times = 50
+	)
+```
+
+```{r show-dfCount-performance, echo = FALSE, results = 'asis'}
+knitr::kable(summary(m) %>% dplyr::select(expr, min, mean, median, max, neval))
+```
+
+Every pair of rows corresponds to counting the same data using `dfCount()` vs
+`table()`.  The results show that:  
+
+- `dfCount()` was faster in all 4 large datasets  
+- `dfCount()` was an order of magnitude faster in both cases when the data
+was numeric  
+- `dfCount()` was slower on very the small dataset
+
+
+After performing this analysis, I've realized that the likely cause of the
+speed boost is due to `dfCount()` relying on `dplyr`. After making that
+realization, I found that `dplyr` also has a `count()` function, which
+performs equally fast as `dfCount()`, which further supports the hypothesis
+that the speed boost was thanks to `dplyr`. However, I still want to include
+this function in the package because it took a lot of hard work (and
+documentation!), and it also has a very differences from `dplyr::count()`. For 
+example, `dplyr::count()` does not sort by default, which I find to be
+the less desired behaviour, and `dplyr::count()` does not have a
+standard-evaluation version.

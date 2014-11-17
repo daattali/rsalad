@@ -26,3 +26,8 @@ test_that("move functions throw an error when a column name doesn't exist", {
 	expect_error(moveFront_(df, "z"))
 	expect_error(moveBack_(df, "z"))
 })
+
+test_that("move retains the original data.frame/tbl_df class", {
+	expect_false(dplyr::is.tbl(moveFront(df, c)))
+	expect_true(dplyr::is.tbl(moveFront(dplyr::tbl_df(df), c)))
+})

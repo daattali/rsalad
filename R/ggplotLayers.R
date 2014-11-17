@@ -75,6 +75,6 @@ rotateTextX <- function() {
 	}
 
 	ggplot2::theme(
-		axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0)
+		axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5)
 	)
 }
