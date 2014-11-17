@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Dean Attali" />
+
+<meta name="date" content="2014-11-16" />
+
+<title>Package rsalad</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div id="header">
+<h1 class="title">Package rsalad</h1>
+<h4 class="author"><em>Dean Attali</em></h4>
+<h4 class="date"><em>2014-11-16</em></h4>
+</div>
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><code>rsalad</code>, like any other salad, is a mixture of different healthy vegetables that you should be having frequently and that can make your life much better. Except that instead of vegetables, <code>rsalad</code> provides you with R functions.</p>
+<p>This package was born as a result of me constantly breaking the DRY principle by copy-and-pasting functions from old projects into new ones. Hence, the functions in <code>rsalad</code> do not have a single common topic, but they are all either related to manipulating data.frames, improving ggplot2 plots, or general productivity utilities.</p>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<p>This vignette will introduce all the families of functions available in <code>rsalad</code>, but will not dive too deeply into any one specific function. To demonstrate all the functionality, we will use the <code>nycflights13::flights</code> dataset (information about ~335k flights departing from NYC) to visualize the 50 most common destinations of flights out of NYC. While the analysis is not particularly exciting, it will show how to use <code>rsalad</code> proficiently.</p>
+<div id="load-packages" class="section level3">
+<h3>Load packages</h3>
+<p>Before beginning any analysis using <code>rsalad</code>, the first step is to load the package. It is strongly recommended to also have the <code>plyr</code> and <code>ggplot2</code> packages installed, since they are used in many of the <code>rsalad</code> functions.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rsalad)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)</code></pre>
+</div>
+<div id="load-data" class="section level3">
+<h3>Load data</h3>
+<p>First step is to load the <code>flights</code> dataset and have a peak at how it looks</p>
+<pre class="sourceCode r"><code class="sourceCode r">fDat &lt;-<span class="st"> </span>nycflights13::flights
+<span class="kw">head</span>(fDat)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">month</th>
+<th align="right">day</th>
+<th align="right">dep_time</th>
+<th align="right">dep_delay</th>
+<th align="right">arr_time</th>
+<th align="right">arr_delay</th>
+<th align="left">carrier</th>
+<th align="left">tailnum</th>
+<th align="right">flight</th>
+<th align="left">origin</th>
+<th align="left">dest</th>
+<th align="right">air_time</th>
+<th align="right">distance</th>
+<th align="right">hour</th>
+<th align="right">minute</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">517</td>
+<td align="right">2</td>
+<td align="right">830</td>
+<td align="right">11</td>
+<td align="left">UA</td>
+<td align="left">N14228</td>
+<td align="right">1545</td>
+<td align="left">EWR</td>
+<td align="left">IAH</td>
+<td align="right">227</td>
+<td align="right">1400</td>
+<td align="right">5</td>
+<td align="right">17</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">533</td>
+<td align="right">4</td>
+<td align="right">850</td>
+<td align="right">20</td>
+<td align="left">UA</td>
+<td align="left">N24211</td>
+<td align="right">1714</td>
+<td align="left">LGA</td>
+<td align="left">IAH</td>
+<td align="right">227</td>
+<td align="right">1416</td>
+<td align="right">5</td>
+<td align="right">33</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">542</td>
+<td align="right">2</td>
+<td align="right">923</td>
+<td align="right">33</td>
+<td align="left">AA</td>
+<td align="left">N619AA</td>
+<td align="right">1141</td>
+<td align="left">JFK</td>
+<td align="left">MIA</td>
+<td align="right">160</td>
+<td align="right">1089</td>
+<td align="right">5</td>
+<td align="right">42</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">544</td>
+<td align="right">-1</td>
+<td align="right">1004</td>
+<td align="right">-18</td>
+<td align="left">B6</td>
+<td align="left">N804JB</td>
+<td align="right">725</td>
+<td align="left">JFK</td>
+<td align="left">BQN</td>
+<td align="right">183</td>
+<td align="right">1576</td>
+<td align="right">5</td>
+<td align="right">44</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">554</td>
+<td align="right">-6</td>
+<td align="right">812</td>
+<td align="right">-25</td>
+<td align="left">DL</td>
+<td align="left">N668DN</td>
+<td align="right">461</td>
+<td align="left">LGA</td>
+<td align="left">ATL</td>
+<td align="right">116</td>
+<td align="right">762</td>
+<td align="right">5</td>
+<td align="right">54</td>
+</tr>
+<tr class="even">
+<td align="right">2013</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">554</td>
+<td align="right">-4</td>
+<td align="right">740</td>
+<td align="right">12</td>
+<td align="left">UA</td>
+<td align="left">N39463</td>
+<td align="right">1696</td>
+<td align="left">EWR</td>
+<td align="left">ORD</td>
+<td align="right">150</td>
+<td align="right">719</td>
+<td align="right">5</td>
+<td align="right">54</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="nin-operator-and-notin" class="section level3">
+<h3><code>%nin%</code> operator and <code>notIn()</code></h3>
+<p>Let’s say that for some reason we aren’t interested in flights operated by United Airlines (UA), Delta Airlines (DL) and American Airlines (AA). To choose only carrier that are <strong>not</strong> part of that group, we can use the <code>%nin%</code> operator, which is also aliased to <code>notIn()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fDat2 &lt;-<span class="st"> </span>fDat %&gt;%<span class="st"> </span><span class="kw">filter</span>(carrier %nin%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;UA&quot;</span>, <span class="st">&quot;DL&quot;</span>, <span class="st">&quot;AA&quot;</span>))
+allCarriers &lt;-<span class="st"> </span>fDat %&gt;%<span class="st"> </span>dplyr::<span class="kw">select</span>(carrier) %&gt;%<span class="st"> </span>first %&gt;%<span class="st"> </span>unique
+myCarriers &lt;-<span class="st"> </span>fDat2 %&gt;%<span class="st"> </span>dplyr::<span class="kw">select</span>(carrier) %&gt;%<span class="st"> </span>first %&gt;%<span class="st"> </span>unique
+
+<span class="kw">paste0</span>(<span class="st">&quot;All carriers: &quot;</span>, <span class="kw">paste</span>(allCarriers, <span class="dt">collapse =</span> <span class="st">&quot;, &quot;</span>))
+<span class="kw">paste0</span>(<span class="st">&quot;My carriers: &quot;</span>, <span class="kw">paste</span>(myCarriers, <span class="dt">collapse =</span> <span class="st">&quot;, &quot;</span>))</code></pre>
+<pre><code>#&gt; [1] &quot;All carriers: UA, AA, B6, DL, EV, MQ, US, WN, VX, FL, AS, 9E, F9, HA, YV, OO&quot;
+#&gt; [1] &quot;My carriers: B6, EV, MQ, US, WN, VX, FL, AS, 9E, F9, HA, YV, OO&quot;</code></pre>
+<p>The <code>%nin%</code> operator is simply the negation of <code>%in%</code>, but can be a handy shortcut. <code>lhs %nin% rhs</code> is equivalent to <code>notIn(lhs, rhs)</code>. The following code would have the same result as above:</p>
+<pre class="sourceCode r"><code class="sourceCode r">fDat2_2 &lt;-<span class="st"> </span>fDat %&gt;%<span class="st"> </span><span class="kw">filter</span>(<span class="kw">notIn</span>(carrier, <span class="kw">c</span>(<span class="st">&quot;UA&quot;</span>, <span class="st">&quot;DL&quot;</span>, <span class="st">&quot;AA&quot;</span>)))
+<span class="kw">identical</span>(fDat2, fDat2_2)</code></pre>
+<pre><code>#&gt; [1] TRUE</code></pre>
+<p>For more information, see <code>?rsalad::notIn</code>.</p>
+</div>
+<div id="move-functions-move-columns-to-frontback" class="section level3">
+<h3><code>move</code> functions: move columns to front/back</h3>
+<p>The <code>move</code> family of functions can be used to rearrange the column order of a data.frame by moving specific columns to be the first (<code>moveFront()</code> and <code>moveFront_()</code>) or last (<code>moveBack()</code> and <code>moveBack_()</code>) columns.<br />The order in which the columns are passed in as arguments determines the order in which the columns will be in the resulting data.frame, regardless of whether the columns are moved to the front or back.</p>
+<p>These functions support non-standard evaulation (see function documentation for more details).</p>
+<p>For brevity, we will only keep a few columns in the data.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fDat3 &lt;-<span class="st"> </span>fDat2 %&gt;%<span class="st"> </span>dplyr::<span class="kw">select</span>(carrier, flight, origin, dest)
+<span class="kw">head</span>(fDat3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">carrier</th>
+<th align="right">flight</th>
+<th align="left">origin</th>
+<th align="left">dest</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">B6</td>
+<td align="right">725</td>
+<td align="left">JFK</td>
+<td align="left">BQN</td>
+</tr>
+<tr class="even">
+<td align="left">B6</td>
+<td align="right">507</td>
+<td align="left">EWR</td>
+<td align="left">FLL</td>
+</tr>
+<tr class="odd">
+<td align="left">EV</td>
+<td align="right">5708</td>
+<td align="left">LGA</td>
+<td align="left">IAD</td>
+</tr>
+<tr class="even">
+<td align="left">B6</td>
+<td align="right">79</td>
+<td align="left">JFK</td>
+<td align="left">MCO</td>
+</tr>
+<tr class="odd">
+<td align="left">B6</td>
+<td align="right">49</td>
+<td align="left">JFK</td>
+<td align="left">PBI</td>
+</tr>
+<tr class="even">
+<td align="left">B6</td>
+<td align="right">71</td>
+<td align="left">JFK</td>
+<td align="left">TPA</td>
+</tr>
+</tbody>
+</table>
+<p>Now let’s rearrange the columns to be in this order: dest, origin, carrier, flight.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fDat4 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span class="kw">moveFront</span>(dest, origin)
+<span class="kw">head</span>(fDat4)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">dest</th>
+<th align="left">origin</th>
+<th align="left">carrier</th>
+<th align="right">flight</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">BQN</td>
+<td align="left">JFK</td>
+<td align="left">B6</td>
+<td align="right">725</td>
+</tr>
+<tr class="even">
+<td align="left">FLL</td>
+<td align="left">EWR</td>
+<td align="left">B6</td>
+<td align="right">507</td>
+</tr>
+<tr class="odd">
+<td align="left">IAD</td>
+<td align="left">LGA</td>
+<td align="left">EV</td>
+<td align="right">5708</td>
+</tr>
+<tr class="even">
+<td align="left">MCO</td>
+<td align="left">JFK</td>
+<td align="left">B6</td>
+<td align="right">79</td>
+</tr>
+<tr class="odd">
+<td align="left">PBI</td>
+<td align="left">JFK</td>
+<td align="left">B6</td>
+<td align="right">49</td>
+</tr>
+<tr class="even">
+<td align="left">TPA</td>
+<td align="left">JFK</td>
+<td align="left">B6</td>
+<td align="right">71</td>
+</tr>
+</tbody>
+</table>
+<p>The same result can be achieved in different ways using other <code>move</code> functions.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fDat4_2 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span class="kw">moveFront_</span>(<span class="kw">c</span>(<span class="st">&quot;dest&quot;</span>, <span class="st">&quot;origin&quot;</span>))
+fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span class="kw">moveBack</span>(carrier, flight) %&gt;%<span class="st"> </span><span class="kw">moveFront</span>(dest)
+
+<span class="kw">all</span>(<span class="kw">identical</span>(fDat4, fDat4_2), <span class="kw">identical</span>(fDat4, fDat4_3))</code></pre>
+<pre><code>#&gt; [1] TRUE</code></pre>
+<p>For more information, see <code>?rsalad::move</code>.</p>
+</div>
+<div id="dffactorize-convert-data.frame-columns-to-factors" class="section level3">
+<h3><code>dfFactorize()</code>: convert data.frame columns to factors</h3>
+<p>Sometimes you want to convert all the character columns of a data.frame into factors. In our current data, we have three character variables (dest, origin, carrier), but they all make more sense as factors. Rather than converting each column manually, we can use the <code>dfFactorize()</code> function.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(fDat4)</code></pre>
+<pre><code>#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    197272 obs. of  4 variables:
+#&gt;  $ dest   : chr  &quot;BQN&quot; &quot;FLL&quot; &quot;IAD&quot; &quot;MCO&quot; ...
+#&gt;  $ origin : chr  &quot;JFK&quot; &quot;EWR&quot; &quot;LGA&quot; &quot;JFK&quot; ...
+#&gt;  $ carrier: chr  &quot;B6&quot; &quot;B6&quot; &quot;EV&quot; &quot;B6&quot; ...
+#&gt;  $ flight : int  725 507 5708 79 49 71 1806 371 4650 343 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">fDat5 &lt;-<span class="st"> </span>fDat4 %&gt;%<span class="st"> </span><span class="kw">dfFactorize</span>()
+<span class="kw">str</span>(fDat5)</code></pre>
+<pre><code>#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    197272 obs. of  4 variables:
+#&gt;  $ dest   : Factor w/ 94 levels &quot;ABQ&quot;,&quot;ACK&quot;,&quot;ALB&quot;,..: 12 32 38 48 63 90 11 32 4 63 ...
+#&gt;  $ origin : Factor w/ 3 levels &quot;EWR&quot;,&quot;JFK&quot;,&quot;LGA&quot;: 2 1 3 2 2 2 2 3 3 1 ...
+#&gt;  $ carrier: Factor w/ 13 levels &quot;9E&quot;,&quot;AS&quot;,&quot;B6&quot;,..: 3 3 4 3 3 3 3 3 8 3 ...
+#&gt;  $ flight : int  725 507 5708 79 49 71 1806 371 4650 343 ...</code></pre>
+<p>As you can see, calling <code>dfFactorize()</code> with no additional arguments converted all potential factor columns into factors. Note that the integer column was unaffected.</p>
+<p>By default, all character columns are coerced to factors, but we can also specify which columns to convert or which columns to leave unaffected.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(fDat4 %&gt;%<span class="st"> </span><span class="kw">dfFactorize</span>(<span class="dt">only =</span> <span class="st">&quot;origin&quot;</span>))</code></pre>
+<pre><code>#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    197272 obs. of  4 variables:
+#&gt;  $ dest   : chr  &quot;BQN&quot; &quot;FLL&quot; &quot;IAD&quot; &quot;MCO&quot; ...
+#&gt;  $ origin : Factor w/ 3 levels &quot;EWR&quot;,&quot;JFK&quot;,&quot;LGA&quot;: 2 1 3 2 2 2 2 3 3 1 ...
+#&gt;  $ carrier: chr  &quot;B6&quot; &quot;B6&quot; &quot;EV&quot; &quot;B6&quot; ...
+#&gt;  $ flight : int  725 507 5708 79 49 71 1806 371 4650 343 ...</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(fDat4 %&gt;%<span class="st"> </span><span class="kw">dfFactorize</span>(<span class="dt">ignore =</span> <span class="kw">c</span>(<span class="st">&quot;origin&quot;</span>, <span class="st">&quot;dest&quot;</span>)))</code></pre>
+<pre><code>#&gt; Classes 'tbl_df', 'tbl' and 'data.frame':    197272 obs. of  4 variables:
+#&gt;  $ dest   : chr  &quot;BQN&quot; &quot;FLL&quot; &quot;IAD&quot; &quot;MCO&quot; ...
+#&gt;  $ origin : chr  &quot;JFK&quot; &quot;EWR&quot; &quot;LGA&quot; &quot;JFK&quot; ...
+#&gt;  $ carrier: Factor w/ 13 levels &quot;9E&quot;,&quot;AS&quot;,&quot;B6&quot;,..: 3 3 4 3 3 3 3 3 8 3 ...
+#&gt;  $ flight : int  725 507 5708 79 49 71 1806 371 4650 343 ...</code></pre>
+<p>For more information, see <code>?rsalad::dfFactorize</code>.</p>
+</div>
+<div id="dfcount-count-number-of-rows-per-group" class="section level3">
+<h3><code>dfCount()</code>: count number of rows per group</h3>
+<p>Our goal is to see which destinations were the most common, so the next step is to count how many observations we have for each destination. This can be achieved using the base R function <code>table()</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(<span class="kw">table</span>(fDat5$dest))</code></pre>
+<pre><code>#&gt; 
+#&gt;  ABQ  ACK  ALB  ATL  AUS  AVL 
+#&gt;  254  265  439 6541 1047  275</code></pre>
+<p>However, this is such a common task for me that I was not happy with the result <code>table()</code> gives.<br />Specifically:</p>
+<ul>
+<li><code>table()</code> returns a <code>table</code> object rather than the much more uesful <code>data.frame</code>.<br /></li>
+<li><code>table()</code> does not sort the resulting counts.<br /></li>
+<li><code>table()</code> performs very slowly on large datasets, especially if the data is numeric (see Performance section below).</li>
+</ul>
+<p>The <code>dfCount()</code> function provides an alternative way to count the data in a data.frame column in an efficient way, sorts the results, and returns a data.frame.<br />Let’s use dfCount to count the number of flights for each destination.</p>
+<pre class="sourceCode r"><code class="sourceCode r">countDat &lt;-<span class="st"> </span>fDat5 %&gt;%<span class="st"> </span><span class="kw">dfCount</span>(<span class="st">&quot;dest&quot;</span>)
+<span class="kw">head</span>(countDat)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">dest</th>
+<th align="right">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CLT</td>
+<td align="right">14062</td>
+</tr>
+<tr class="even">
+<td align="left">BOS</td>
+<td align="right">9739</td>
+</tr>
+<tr class="odd">
+<td align="left">DCA</td>
+<td align="right">9701</td>
+</tr>
+<tr class="even">
+<td align="left">RDU</td>
+<td align="right">8162</td>
+</tr>
+<tr class="odd">
+<td align="left">FLL</td>
+<td align="right">6563</td>
+</tr>
+<tr class="even">
+<td align="left">ATL</td>
+<td align="right">6541</td>
+</tr>
+</tbody>
+</table>
+<p>Now our count data is in a nice data.frame format that can play nicely with other data.frames, and can be easily merged/joined into the original dataset if we wanted to.</p>
+<p>Since we only want to see the 50 most common destinations, and the count data is sorted in descending order, we can now easily retain only the 50 destinations that appeared the most.</p>
+<pre class="sourceCode r"><code class="sourceCode r">countDat2 &lt;-<span class="st"> </span><span class="kw">slice</span>(countDat, <span class="dv">1</span>:<span class="dv">50</span>)</code></pre>
+<p>For more information, see <code>?rsalad::dfCount</code>.</p>
+</div>
+<div id="plotcount-plot-count-data" class="section level3">
+<h3><code>plotCount()</code>: plot count data</h3>
+<p>The final step after obtaining the data we want is to visualize it effectively.</p>
+<p>The <code>plotCount()</code> function is a convenient way to plot count data. It is meant to be called with the output of <code>dfCount()</code>, but any data.frame with a similar structure (two columns; first column are distinct values; second column is integer counts) will work.</p>
+<p>This is similar to how <code>barplot()</code> can be used to visualize the results of <code>table()</code>. Since <code>dfCount()</code> is meant as a replacement for <code>table()</code>, <code>plotCount()</code> can also accept the output from a <code>table()</code> call, though it is strongly recommended to use <code>dfCount()</code>.</p>
+<p>Note that <code>ggplot2</code> is the graphics package used to generate these plots.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCount</span>(countDat2)</code></pre>
+<p><img src="data:image/png;base64,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" /></p>
+<p>For more information, see <code>?rsalad::plotCount</code>.</p>
+</div>
+<div id="ggplotlayers-functions-useful-ggplot2-layers" class="section level3">
+<h3><code>ggplotLayers</code> functions: useful ggplot2 layers</h3>
+<p><code>rsalad</code> provides a few functions that add useful layers to <code>ggplot2</code> plots. The plot above is too cluttered, and there are two specific functions we can use to make it a little better.</p>
+<p><code>rotateTextX()</code> causes the labels on the x axis to be rotated so that they are vertical, which is often useful when there are many overlapping labels along the x axis, as we have here.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCount</span>(countDat2) +<span class="st"> </span><span class="kw">rotateTextX</span>()</code></pre>
+<p><img src="data:image/png;base64,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" /></p>
+<p><code>removeGrid()</code> is used to always remove all the minor gridlines, and optinally also the major x/y gridlines (both by default). In our case, I would like to strip the minor y gridlines along with the major x gridlins, so I can use either <code>removeGrid(x = TRUE, y = FALSE)</code> or, equivalently, <code>removeGridX()</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCount</span>(countDat2) +<span class="st"> </span><span class="kw">rotateTextX</span>() +<span class="st"> </span><span class="kw">removeGridX</span>()</code></pre>
+<p><img src="data:image/png;base64,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" /></p>
+<p>This figure looks much better!</p>
+<p>Notice how these functions can be added to a ggplot2 plot object just like any other native ggplot2 layer.</p>
+<p>For more information, see <code>?rsalad::ggplotLayers</code>.</p>
+</div>
+</div>
+<div id="other-functions" class="section level2">
+<h2>Other functions</h2>
+<div id="tolowerfirst-convert-first-character-to-lower-case" class="section level4">
+<h4><code>tolowerfirst()</code>: convert first character to lower case</h4>
+<p><code>rsalad</code> provides another function that can sometimes become handy. <code>tolowerfirst()</code> can be used to convert the first letter of a string (or a vector of strings) into lower case. This can be useful, for example, when columns of a data.frame do not follow a consistent capitalization and you would like to lower-case all first letters.</p>
+<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">StudentName =</span> <span class="kw">character</span>(<span class="dv">0</span>), <span class="dt">ExamGrade =</span> <span class="kw">numeric</span>(<span class="dv">0</span>))
+(<span class="kw">colnames</span>(df) &lt;-<span class="st"> </span><span class="kw">tolowerfirst</span>(<span class="kw">colnames</span>(df)))</code></pre>
+<pre><code>#&gt; [1] &quot;studentName&quot; &quot;examGrade&quot;</code></pre>
+<p>For more information, see <code>?rsalad::tolowerfirst</code>.</p>
+</div>
+</div>
+<div id="performance-of-dfcount" class="section level2">
+<h2>Performance of <code>dfCount()</code></h2>
+<p>After some basic testing (not extremely thorough), I believe that <code>dfCount()</code> performs much faster than its equivalent <code>table()</code> on large datasets, especially when the data is numeric. The analysis was done with the <code>microbenchmark</code> package to compare the two functions on a few different datasets.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)</code></pre>
+<pre><code>#&gt; Warning: package 'microbenchmark' was built under R version 3.1.2</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Prepare all the datasets to test on</span>
+fDat &lt;-<span class="st"> </span>nycflights13::flights
+largeIntDat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">col =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">25</span>, <span class="dv">100000</span>))
+largeCharDat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">col =</span> <span class="kw">rep</span>(letters[<span class="dv">1</span>:<span class="dv">25</span>], <span class="dv">100000</span>))
+smallDat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">col =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">25</span>, <span class="dv">100</span>))
+
+<span class="co"># Run the benchmarking</span>
+m &lt;-<span class="st"> </span>
+<span class="st">    </span><span class="kw">microbenchmark</span>(
+      <span class="kw">dfCount</span>(fDat, <span class="st">&quot;day&quot;</span>), <span class="kw">table</span>(fDat$day),
+      <span class="kw">dfCount</span>(fDat, <span class="st">&quot;dest&quot;</span>), <span class="kw">table</span>(fDat$dest),
+      <span class="kw">dfCount</span>(largeIntDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(largeIntDat$col),
+      <span class="kw">dfCount</span>(largeCharDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(largeCharDat$col), 
+      <span class="kw">dfCount</span>(smallDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(smallDat$col),
+      <span class="dt">times =</span> <span class="dv">50</span>
+    )</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">expr</th>
+<th align="right">min</th>
+<th align="right">mean</th>
+<th align="right">median</th>
+<th align="right">max</th>
+<th align="right">neval</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">dfCount(fDat, “day”)</td>
+<td align="right">15.604503</td>
+<td align="right">17.170283</td>
+<td align="right">16.549247</td>
+<td align="right">26.072016</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">table(fDat$day)</td>
+<td align="right">124.756484</td>
+<td align="right">139.630189</td>
+<td align="right">131.126499</td>
+<td align="right">212.657487</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">dfCount(fDat, “dest”)</td>
+<td align="right">18.345453</td>
+<td align="right">20.997519</td>
+<td align="right">19.265273</td>
+<td align="right">77.707660</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">table(fDat$dest)</td>
+<td align="right">23.122873</td>
+<td align="right">30.153458</td>
+<td align="right">25.657830</td>
+<td align="right">83.998870</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">dfCount(largeIntDat, “col”)</td>
+<td align="right">101.612353</td>
+<td align="right">109.113854</td>
+<td align="right">105.787005</td>
+<td align="right">162.353465</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">table(largeIntDat$col)</td>
+<td align="right">971.731341</td>
+<td align="right">1048.799623</td>
+<td align="right">1015.500407</td>
+<td align="right">1368.914371</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">dfCount(largeCharDat, “col”)</td>
+<td align="right">102.182314</td>
+<td align="right">118.080375</td>
+<td align="right">106.388672</td>
+<td align="right">243.613950</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">table(largeCharDat$col)</td>
+<td align="right">178.538192</td>
+<td align="right">219.553055</td>
+<td align="right">193.834439</td>
+<td align="right">327.163080</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">dfCount(smallDat, “col”)</td>
+<td align="right">1.868964</td>
+<td align="right">2.319091</td>
+<td align="right">2.247411</td>
+<td align="right">4.173004</td>
+<td align="right">50</td>
+</tr>
+<tr class="even">
+<td align="left">table(smallDat$col)</td>
+<td align="right">1.093375</td>
+<td align="right">1.391559</td>
+<td align="right">1.239256</td>
+<td align="right">7.416474</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
+<p>Every pair of rows corresponds to counting the same data using <code>dfCount()</code> vs <code>table()</code>. The results show that:</p>
+<ul>
+<li><code>dfCount()</code> was faster in all 4 large datasets<br /></li>
+<li><code>dfCount()</code> was an order of magnitude faster in both cases when the data was numeric<br /></li>
+<li><code>dfCount()</code> was slower on very the small dataset</li>
+</ul>
+<p>After performing this analysis, I’ve realized that the likely cause of the speed boost is due to <code>dfCount()</code> relying on <code>dplyr</code>. After making that realization, I found that <code>dplyr</code> also has a <code>count()</code> function, which performs equally fast as <code>dfCount()</code>, which further supports the hypothesis that the speed boost was thanks to <code>dplyr</code>. However, I still want to include this function in the package because it took a lot of hard work (and documentation!), and it also has a very differences from <code>dplyr::count()</code>. For example, <code>dplyr::count()</code> does not sort by default, which I find to be the less desired behaviour, and <code>dplyr::count()</code> does not have a standard-evaluation version.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
