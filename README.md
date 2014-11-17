@@ -17,7 +17,7 @@ to perform one of the tasks implemented by rsalad.
 ## Installation
 
 rsalad is currently only available through Github and can be downloaded
-easily using devtools
+easily using devtools.
 
 ```
 # install.packages("devtools")
@@ -26,13 +26,17 @@ devtools::install_github("daattali/rsalad")
 
 ## Getting started
 
-There are many different usecases for rsalad.  See the vignette for a detailed
-walkthrough.
+There are many different usecases for rsalad.  See the vignette for a more
+detailed walk-through of the package.
 ```
 vignette("overview", "rsalad")
 ```
 
-Below is a very brief introduction to the functions in rsalad.
+Alternatively, see the help file for any specific function for a complete
+detailed explanation of the function. For example `?rsalad::moveFront`.
+
+Below is a very brief introduction to the functions in rsalad. (the package
+must first be loaded for the examples to work `library(rsalad)`)
 
 ### `%nin%` and `notIn()`
 Determine if values in the first argument don't exist in the second argument.
@@ -43,7 +47,7 @@ c("a", "A") %nin% letters
 ```
 
 ### `dfCount()`: count number of rows per group
-Tabulate how many times each distinct value of a specific column gets repeated.
+Count how many times each distinct value of a data.frame column is observed.
 
 ```
 df <- data.frame(col = c(rep("a", 2), rep("b", 3)))
@@ -69,7 +73,7 @@ moveBack_(df, c("d", "c"))
 ```
 
 ### `tolowerfirst()`: convert first character to lower case
-Given a character vector, convert only the first alphabetical character to lower case.
+Given a character vector, convert the first character to lower case.
 
 ```
 tolowerfirst(c("CamelCase", "ALLCAPS"))

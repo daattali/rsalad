@@ -20,8 +20,8 @@ A data.frame with two columns: The first column is the distinct
   rows with that value.
 }
 \description{
-Tabulate how many times each distinct value of a specific column gets
-repeated.
+Count how many times each distinct value of a data.frame column is
+observed.
 }
 \details{
 \code{dfCount(x, "y")} is similar in functionality to \code{table(x$y)}, but

@@ -1,7 +1,7 @@
 #' Count number of rows per group
 #'
-#' Tabulate how many times each distinct value of a specific column gets
-#' repeated.
+#' Count how many times each distinct value of a data.frame column is
+#' observed.
 #'
 #' \code{dfCount(x, "y")} is similar in functionality to \code{table(x$y)}, but
 #' performs better on large datasets (according to my not-so-thorough testing).

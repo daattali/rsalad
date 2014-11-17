@@ -1,7 +1,6 @@
 #' Convert first character to lower case
 #'
-#' Given a character vector, convert only the first alphabetical character to
-#' lower case.
+#' Given a character vector, convert the first character to lower case.
 #'
 #' @param x A character vector
 #' @return The original character vector with the first character of every

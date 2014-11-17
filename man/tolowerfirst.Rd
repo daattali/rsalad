@@ -13,8 +13,7 @@ The original character vector with the first character of every
   element converted to lower case
 }
 \description{
-Given a character vector, convert only the first alphabetical character to
-lower case.
+Given a character vector, convert the first character to lower case.
 }
 \examples{
 tolowerfirst("CamelCase")
