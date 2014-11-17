@@ -27,7 +27,7 @@ The \code{ggplot2} package is required for these functions.
 }
 \examples{
 if (requireNamespace("ggplot2", quietly = TRUE)) {
-  if (requireNamespace("nycflights13::", quietly = TRUE)) {
+  if (requireNamespace("nycflights13", quietly = TRUE)) {
     flights <- nycflights13::flights
     df <- dfCount(flights, "origin")
     plotCount(df)

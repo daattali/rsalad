@@ -10,7 +10,7 @@
 
 <meta name="author" content="Dean Attali" />
 
-<meta name="date" content="2014-11-16" />
+<meta name="date" content="2014-11-17" />
 
 <title>Package rsalad</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Package rsalad</h1>
 <h4 class="author"><em>Dean Attali</em></h4>
-<h4 class="date"><em>2014-11-16</em></h4>
+<h4 class="date"><em>2014-11-17</em></h4>
 </div>
 
 
@@ -467,9 +467,9 @@ fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span
 <div id="performance-of-dfcount" class="section level2">
 <h2>Performance of <code>dfCount()</code></h2>
 <p>After some basic testing (not extremely thorough), I believe that <code>dfCount()</code> performs much faster than its equivalent <code>table()</code> on large datasets, especially when the data is numeric. The analysis was done with the <code>microbenchmark</code> package to compare the two functions on a few different datasets.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)</code></pre>
-<pre><code>#&gt; Warning: package 'microbenchmark' was built under R version 3.1.2</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Prepare all the datasets to test on</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
+
+<span class="co"># Prepare all the datasets to test on</span>
 fDat &lt;-<span class="st"> </span>nycflights13::flights
 largeIntDat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">col =</span> <span class="kw">rep</span>(<span class="dv">1</span>:<span class="dv">25</span>, <span class="dv">100000</span>))
 largeCharDat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">col =</span> <span class="kw">rep</span>(letters[<span class="dv">1</span>:<span class="dv">25</span>], <span class="dv">100000</span>))
@@ -499,82 +499,82 @@ m &lt;-<span class="st"> </span>
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, “day”)</td>
-<td align="right">15.604503</td>
-<td align="right">17.170283</td>
-<td align="right">16.549247</td>
-<td align="right">26.072016</td>
+<td align="right">15.627962</td>
+<td align="right">19.814549</td>
+<td align="right">15.955827</td>
+<td align="right">153.118243</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">124.756484</td>
-<td align="right">139.630189</td>
-<td align="right">131.126499</td>
-<td align="right">212.657487</td>
+<td align="right">125.174701</td>
+<td align="right">128.166405</td>
+<td align="right">127.852606</td>
+<td align="right">138.403322</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, “dest”)</td>
-<td align="right">18.345453</td>
-<td align="right">20.997519</td>
-<td align="right">19.265273</td>
-<td align="right">77.707660</td>
+<td align="right">17.916974</td>
+<td align="right">18.519345</td>
+<td align="right">18.412713</td>
+<td align="right">20.360297</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">23.122873</td>
-<td align="right">30.153458</td>
-<td align="right">25.657830</td>
-<td align="right">83.998870</td>
+<td align="right">23.427830</td>
+<td align="right">25.450577</td>
+<td align="right">23.874087</td>
+<td align="right">76.551975</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, “col”)</td>
-<td align="right">101.612353</td>
-<td align="right">109.113854</td>
-<td align="right">105.787005</td>
-<td align="right">162.353465</td>
+<td align="right">100.434675</td>
+<td align="right">102.479618</td>
+<td align="right">102.025620</td>
+<td align="right">106.814586</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">971.731341</td>
-<td align="right">1048.799623</td>
-<td align="right">1015.500407</td>
-<td align="right">1368.914371</td>
+<td align="right">945.694880</td>
+<td align="right">968.620850</td>
+<td align="right">960.775420</td>
+<td align="right">1087.544731</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, “col”)</td>
-<td align="right">102.182314</td>
-<td align="right">118.080375</td>
-<td align="right">106.388672</td>
-<td align="right">243.613950</td>
+<td align="right">100.020856</td>
+<td align="right">101.740016</td>
+<td align="right">101.521817</td>
+<td align="right">109.562867</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">178.538192</td>
-<td align="right">219.553055</td>
-<td align="right">193.834439</td>
-<td align="right">327.163080</td>
+<td align="right">150.511812</td>
+<td align="right">161.679340</td>
+<td align="right">155.968604</td>
+<td align="right">210.078912</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, “col”)</td>
-<td align="right">1.868964</td>
-<td align="right">2.319091</td>
-<td align="right">2.247411</td>
-<td align="right">4.173004</td>
+<td align="right">1.909282</td>
+<td align="right">2.117841</td>
+<td align="right">2.077888</td>
+<td align="right">2.424630</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.093375</td>
-<td align="right">1.391559</td>
-<td align="right">1.239256</td>
-<td align="right">7.416474</td>
+<td align="right">1.123798</td>
+<td align="right">1.232768</td>
+<td align="right">1.237790</td>
+<td align="right">1.344818</td>
 <td align="right">50</td>
 </tr>
 </tbody>

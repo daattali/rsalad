@@ -36,7 +36,7 @@
 #'   rows with that value.
 #' @export
 #' @examples
-#' if (requireNamespace("nycflights13::", quietly = TRUE)) {
+#' if (requireNamespace("nycflights13", quietly = TRUE)) {
 #'   flights <- nycflights13::flights
 #'   dfCount(flights, "dest")
 #'   dfCount(flights, "dest", sort = FALSE)

@@ -54,7 +54,7 @@ faster than \code{table(df$a)} (217 milliseconds vs 2112 milliseconds).
 See the package vignette for more benchmarking analysis.
 }
 \examples{
-if (requireNamespace("nycflights13::", quietly = TRUE)) {
+if (requireNamespace("nycflights13", quietly = TRUE)) {
   flights <- nycflights13::flights
   dfCount(flights, "dest")
   dfCount(flights, "dest", sort = FALSE)

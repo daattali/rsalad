@@ -15,7 +15,7 @@
 #' @export
 #' @examples
 #' if (requireNamespace("ggplot2", quietly = TRUE)) {
-#'   if (requireNamespace("nycflights13::", quietly = TRUE)) {
+#'   if (requireNamespace("nycflights13", quietly = TRUE)) {
 #'     flights <- nycflights13::flights
 #'     df <- dfCount(flights, "origin")
 #'     plotCount(df)
