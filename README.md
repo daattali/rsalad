@@ -16,7 +16,7 @@ to perform one of the tasks implemented by rsalad.
 
 ## Installation
 
-rsalad is currently only available through Github and can be downloaded
+rsalad is currently only available through GitHub and can be downloaded
 easily using devtools.
 
 ```
