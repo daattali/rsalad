@@ -10,9 +10,9 @@ URL: https://github.com/daattali/rsalad
 Depends:
     R (>= 3.1.0)
 Imports:
+    dplyr (>= 0.3.0),
     magrittr (>= 1.0.1)
 Suggests:
-    dplyr (>= 0.3.0),
     ggplot2 (>= 1.0.0),
     knitr (>= 1.7),
     microbenchmark (>= 1.4),

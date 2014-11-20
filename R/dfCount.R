@@ -47,6 +47,7 @@
 #' dfCount(infert, "education", sort = FALSE)
 #' data.frame(table(infert$education))
 #' @seealso \code{\link{plotCount}}
+#' @importFrom dplyr n
 dfCount <- function(df, col, sort = TRUE, name = "total") {
 	if (!requireNamespace("dplyr", quietly = TRUE)) {
 		stop("`dplyr` needed for this function to work. Please install it.",
@@ -65,7 +66,7 @@ dfCount <- function(df, col, sort = TRUE, name = "total") {
 	df <-
 		df %>%
 		dplyr::group_by_(col) %>%
-		dplyr::summarise(total = n()) %>%
+		dplyr::summarise("total" = n()) %>%
 		dplyr::ungroup()
 
 	# Sort (most observations near the top)
@@ -73,9 +74,9 @@ dfCount <- function(df, col, sort = TRUE, name = "total") {
 	#   but I couldn't figure out how to rename/mutate/arrange using a variable
 	#   as the column name
 	if (sort) {
-		df <-
-			df %>%
-			dplyr::arrange(desc(total))
+		df <- df[order(-df$total), ]
+		# I wanted to do it with dplyr::arrange and desc, but didn't work... :(
+		# dplyr::arrange(desc(total))]
 		df[, 1] <- factor(dplyr::first(df), dplyr::first(df))
 	}
 
