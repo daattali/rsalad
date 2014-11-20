@@ -26,8 +26,9 @@ devtools::install_github("daattali/rsalad")
 
 ## Getting started
 
-There are many different usecases for rsalad.  See the vignette for a more
-detailed walk-through of the package.
+There are many different usecases for rsalad.  See the
+[vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/overview.md)
+for a more detailed walk-through of the package.
 ```
 vignette("overview", "rsalad")
 ```
