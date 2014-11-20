@@ -66,7 +66,7 @@ dfCount <- function(df, col, sort = TRUE, name = "total") {
 	df <-
 		df %>%
 		dplyr::group_by_(col) %>%
-		dplyr::summarise("total" = n()) %>%
+		dplyr::summarise_("total" = ~n()) %>%
 		dplyr::ungroup()
 
 	# Sort (most observations near the top)
