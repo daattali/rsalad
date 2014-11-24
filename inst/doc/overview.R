@@ -80,6 +80,12 @@ plotCount(countDat2) + rotateTextX() + removeGridX()
 df <- data.frame(StudentName = character(0), ExamGrade = numeric(0))
 (colnames(df) <- tolowerfirst(colnames(df)))
 
+## ----show-setdiffsym-----------------------------------------------------
+setdiff(1:5, 2:4)
+setdiff(2:4, 1:5)
+setdiffsym(1:5, 2:4)
+setdiffsym(2:4, 1:5)
+
 ## ----dfCount-performance, results = "hide"-------------------------------
 library(microbenchmark)
 

@@ -1,6 +1,6 @@
 Package: rsalad
 Title: A mix of useful R functions that are good for you
-Version: 0.0.1
+Version: 0.0.1.1
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
 Description: This package provides a collection of useful R functions that
     I've found myself reusing often.  While there isn't a common specific theme
@@ -15,6 +15,7 @@ Imports:
 Suggests:
     ggplot2 (>= 1.0.0),
     knitr (>= 1.7),
+    lazyeval (>= 0.1.9),
     microbenchmark (>= 1.4),
     nycflights13 (>= 0.1),
     testthat (>= 0.9.1)

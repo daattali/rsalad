@@ -485,7 +485,7 @@ plots.
 
     plotCount(countDat2)
 
-![](./overview_files/figure-markdown_strict/show-plotCount-1.png)
+![](overview_files/figure-markdown_strict/show-plotCount-1.png)
 
 For more information, see `?rsalad::plotCount`.
 
@@ -501,7 +501,7 @@ labels along the x axis, as we have here.
 
     plotCount(countDat2) + rotateTextX()
 
-![](./overview_files/figure-markdown_strict/rotateTextX-1.png)
+![](overview_files/figure-markdown_strict/rotateTextX-1.png)
 
 `removeGrid()` is used to always remove all the minor gridlines, and
 optinally also the major x/y gridlines (both by default). In our case, I
@@ -511,7 +511,7 @@ equivalently, `removeGridX()`.
 
     plotCount(countDat2) + rotateTextX() + removeGridX()
 
-![](./overview_files/figure-markdown_strict/removeGrid-1.png)
+![](overview_files/figure-markdown_strict/removeGrid-1.png)
 
 This figure looks much better!
 
@@ -537,6 +537,33 @@ and you would like to lower-case all first letters.
     #> [1] "studentName" "examGrade"
 
 For more information, see `?rsalad::tolowerfirst`.
+
+#### `setdiffsym()`: symmetric set difference
+
+When wanting to know the difference between two sets, the base R
+function `setdiff()` unfortunately does not do exactly what you want
+because it is *asymmetric*. This means that the results depend on the
+order of the two vectors passed in, which is often not the desired
+behaviour. `setdiffsym` implements symmetric set difference, whiich is a
+more intuitive set difference.
+
+    setdiff(1:5, 2:4)
+
+    #> [1] 1 5
+
+    setdiff(2:4, 1:5)
+
+    #> integer(0)
+
+    setdiffsym(1:5, 2:4)
+
+    #> [1] 1 5
+
+    setdiffsym(2:4, 1:5)
+
+    #> [1] 1 5
+
+For more information, see `?rsalad::setdiffsym`.
 
 Performance of `dfCount()`
 --------------------------
@@ -580,82 +607,82 @@ different datasets.
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, &quot;day&quot;)</td>
-<td align="right">15.711898</td>
-<td align="right">19.444319</td>
-<td align="right">16.653893</td>
-<td align="right">102.038632</td>
+<td align="right">15.615270</td>
+<td align="right">16.376223</td>
+<td align="right">16.165065</td>
+<td align="right">22.550748</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">133.464627</td>
-<td align="right">144.957074</td>
-<td align="right">138.514932</td>
-<td align="right">216.875574</td>
+<td align="right">129.680449</td>
+<td align="right">136.883097</td>
+<td align="right">133.880697</td>
+<td align="right">191.986486</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, &quot;dest&quot;)</td>
-<td align="right">18.202871</td>
-<td align="right">20.376300</td>
-<td align="right">19.197831</td>
-<td align="right">30.299632</td>
+<td align="right">18.204803</td>
+<td align="right">21.685693</td>
+<td align="right">18.744885</td>
+<td align="right">79.257675</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">25.072840</td>
-<td align="right">32.959702</td>
-<td align="right">26.463109</td>
-<td align="right">108.439804</td>
+<td align="right">23.763228</td>
+<td align="right">26.850362</td>
+<td align="right">25.644443</td>
+<td align="right">35.275563</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, &quot;col&quot;)</td>
-<td align="right">103.396279</td>
-<td align="right">121.693547</td>
-<td align="right">110.998952</td>
-<td align="right">242.747827</td>
+<td align="right">100.313714</td>
+<td align="right">106.752154</td>
+<td align="right">104.755505</td>
+<td align="right">166.337096</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">1012.954453</td>
-<td align="right">1109.933031</td>
-<td align="right">1085.631601</td>
-<td align="right">1564.386122</td>
+<td align="right">984.861953</td>
+<td align="right">1034.237206</td>
+<td align="right">1024.950235</td>
+<td align="right">1117.865360</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, &quot;col&quot;)</td>
-<td align="right">103.958910</td>
-<td align="right">116.693750</td>
-<td align="right">108.933892</td>
-<td align="right">177.140593</td>
+<td align="right">100.102959</td>
+<td align="right">108.058195</td>
+<td align="right">103.266845</td>
+<td align="right">167.133565</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">188.109159</td>
-<td align="right">234.207806</td>
-<td align="right">237.498860</td>
-<td align="right">328.375212</td>
+<td align="right">180.731089</td>
+<td align="right">210.637040</td>
+<td align="right">194.355734</td>
+<td align="right">301.989048</td>
 <td align="right">50</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, &quot;col&quot;)</td>
-<td align="right">1.759736</td>
-<td align="right">2.248789</td>
-<td align="right">2.111976</td>
-<td align="right">4.885548</td>
+<td align="right">2.051834</td>
+<td align="right">4.008136</td>
+<td align="right">2.456300</td>
+<td align="right">80.499845</td>
 <td align="right">50</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.154220</td>
-<td align="right">1.314755</td>
-<td align="right">1.277926</td>
-<td align="right">2.035370</td>
+<td align="right">1.117916</td>
+<td align="right">1.241195</td>
+<td align="right">1.222011</td>
+<td align="right">1.987325</td>
 <td align="right">50</td>
 </tr>
 </tbody>

@@ -53,6 +53,10 @@ dfCount <- function(df, col, sort = TRUE, name = "total") {
 		stop("`dplyr` needed for this function to work. Please install it.",
 				 call. = FALSE)
 	}
+	if (!requireNamespace("lazyeval", quietly = TRUE)) {
+		stop("`lazyeval` needed for this function to work. Please install it.",
+				 call. = FALSE)
+	}
 
 	# Check parameters
 	stopifnot(
@@ -70,17 +74,16 @@ dfCount <- function(df, col, sort = TRUE, name = "total") {
 		dplyr::ungroup()
 
 	# Sort (most observations near the top)
-	# TODO(daattali) I really wanted to do everything in a proper NSE way,
-	#   but I couldn't figure out how to rename/mutate/arrange using a variable
-	#   as the column name
 	if (sort) {
-		df <- df[order(-df$total), ]
-		# I wanted to do it with dplyr::arrange and desc, but didn't work... :(
-		# dplyr::arrange(desc(total))]
+		df <- df %>%
+			dplyr::arrange_(lazyeval::interp(~dplyr::desc(var),
+																			 var = as.name("total")))
+		# TODO(daattali) do this in a dplyr NSE way?
 		df[, 1] <- factor(dplyr::first(df), dplyr::first(df))
 	}
 
 	# Rename the variable
+	# TODO(daattali) do this in a dplyr NSE way?
 	colnames(df)[2] <- name
 
 	df

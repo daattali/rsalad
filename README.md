@@ -80,6 +80,14 @@ Given a character vector, convert the first character to lower case.
 tolowerfirst(c("CamelCase", "ALLCAPS"))
 ```
 
+### `setdiffsym()`: symmetric set difference
+Perform symmetric set difference, as opposed to `base::setdiff()` which
+performs assymetric set difference.
+
+```
+setdiffsym(1:4, 3:5)
+```
+
 ### `plotCount()`: plot count data
 Create a bar plot of count data in a data.frame. Meant to be used with the
 output from `dfCount()`.
