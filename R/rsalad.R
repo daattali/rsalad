@@ -10,4 +10,5 @@
 #' @docType package
 #' @name rsalad
 #' @importFrom magrittr %>%
+#' @importFrom magrittr %<>%
 NULL
