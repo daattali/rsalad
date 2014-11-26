@@ -103,7 +103,7 @@ m <-
 	  dfCount(largeIntDat, "col"), table(largeIntDat$col),
 	  dfCount(largeCharDat, "col"), table(largeCharDat$col), 
 	  dfCount(smallDat, "col"), table(smallDat$col),
-	  times = 50
+	  times = 25
 	)
 
 ## ----show-dfCount-performance, echo = FALSE, results = 'asis'------------

@@ -10,7 +10,7 @@
 
 <meta name="author" content="Dean Attali" />
 
-<meta name="date" content="2014-11-25" />
+<meta name="date" content="2014-11-26" />
 
 <title>Package rsalad</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Package rsalad</h1>
 <h4 class="author"><em>Dean Attali</em></h4>
-<h4 class="date"><em>2014-11-25</em></h4>
+<h4 class="date"><em>2014-11-26</em></h4>
 </div>
 
 
@@ -496,7 +496,7 @@ m &lt;-<span class="st"> </span>
       <span class="kw">dfCount</span>(largeIntDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(largeIntDat$col),
       <span class="kw">dfCount</span>(largeCharDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(largeCharDat$col), 
       <span class="kw">dfCount</span>(smallDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(smallDat$col),
-      <span class="dt">times =</span> <span class="dv">50</span>
+      <span class="dt">times =</span> <span class="dv">25</span>
     )</code></pre>
 <table>
 <thead>
@@ -512,83 +512,83 @@ m &lt;-<span class="st"> </span>
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, “day”)</td>
-<td align="right">15.372994</td>
-<td align="right">17.989042</td>
-<td align="right">16.365558</td>
-<td align="right">75.091330</td>
-<td align="right">50</td>
+<td align="right">19.724240</td>
+<td align="right">23.097939</td>
+<td align="right">21.196983</td>
+<td align="right">46.990535</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">128.993572</td>
-<td align="right">145.813097</td>
-<td align="right">135.668813</td>
-<td align="right">246.705723</td>
-<td align="right">50</td>
+<td align="right">147.472792</td>
+<td align="right">178.278765</td>
+<td align="right">158.432894</td>
+<td align="right">331.514732</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, “dest”)</td>
-<td align="right">17.867963</td>
-<td align="right">20.352844</td>
-<td align="right">19.205980</td>
-<td align="right">31.808924</td>
-<td align="right">50</td>
+<td align="right">22.131829</td>
+<td align="right">27.707510</td>
+<td align="right">23.751683</td>
+<td align="right">51.019620</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">23.264015</td>
-<td align="right">30.663306</td>
-<td align="right">26.834198</td>
-<td align="right">84.866681</td>
-<td align="right">50</td>
+<td align="right">33.246849</td>
+<td align="right">42.231798</td>
+<td align="right">36.979250</td>
+<td align="right">83.090822</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, “col”)</td>
-<td align="right">101.423933</td>
-<td align="right">108.440325</td>
-<td align="right">105.692355</td>
-<td align="right">187.785321</td>
-<td align="right">50</td>
+<td align="right">131.066745</td>
+<td align="right">146.980376</td>
+<td align="right">138.015841</td>
+<td align="right">234.460794</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">993.197940</td>
-<td align="right">1065.717081</td>
-<td align="right">1052.321765</td>
-<td align="right">1368.119090</td>
-<td align="right">50</td>
+<td align="right">1120.304297</td>
+<td align="right">1280.727743</td>
+<td align="right">1234.615711</td>
+<td align="right">1645.513517</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, “col”)</td>
-<td align="right">101.047506</td>
-<td align="right">108.486786</td>
-<td align="right">105.141094</td>
-<td align="right">166.507532</td>
-<td align="right">50</td>
+<td align="right">129.965064</td>
+<td align="right">151.429195</td>
+<td align="right">135.810014</td>
+<td align="right">253.972585</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">182.559339</td>
-<td align="right">211.150673</td>
-<td align="right">197.383271</td>
-<td align="right">308.331846</td>
-<td align="right">50</td>
+<td align="right">217.122366</td>
+<td align="right">283.615536</td>
+<td align="right">283.415533</td>
+<td align="right">452.598135</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, “col”)</td>
-<td align="right">2.006385</td>
-<td align="right">2.372292</td>
-<td align="right">2.369066</td>
-<td align="right">4.888775</td>
-<td align="right">50</td>
+<td align="right">2.245687</td>
+<td align="right">3.167812</td>
+<td align="right">2.794268</td>
+<td align="right">5.258155</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.152003</td>
-<td align="right">1.259712</td>
-<td align="right">1.239972</td>
-<td align="right">1.693735</td>
-<td align="right">50</td>
+<td align="right">1.284953</td>
+<td align="right">1.619460</td>
+<td align="right">1.420146</td>
+<td align="right">3.388050</td>
+<td align="right">25</td>
 </tr>
 </tbody>
 </table>

@@ -67,15 +67,14 @@ dfCount <- function(df, col, sort = TRUE, name = "total") {
 	)
 
 	# Count the number of observations per group
-	df <-
-		df %>%
+	df %<>%
 		dplyr::group_by_(col) %>%
 		dplyr::summarise_("total" = ~n()) %>%
 		dplyr::ungroup()
 
 	# Sort (most observations near the top)
 	if (sort) {
-		df <- df %>%
+		df %<>%
 			dplyr::arrange_(lazyeval::interp(~dplyr::desc(var),
 																			 var = as.name("total")))
 		# TODO(daattali) do this in a dplyr NSE way?

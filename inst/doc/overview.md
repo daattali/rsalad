@@ -485,7 +485,7 @@ plots.
 
     plotCount(countDat2)
 
-![](overview_files/figure-markdown_strict/show-plotCount-1.png)
+![](./overview_files/figure-markdown_strict/show-plotCount-1.png)
 
 For more information, see `?rsalad::plotCount`.
 
@@ -501,7 +501,7 @@ labels along the x axis, as we have here.
 
     plotCount(countDat2) + rotateTextX()
 
-![](overview_files/figure-markdown_strict/rotateTextX-1.png)
+![](./overview_files/figure-markdown_strict/rotateTextX-1.png)
 
 `removeGrid()` is used to always remove all the minor gridlines, and
 optinally also the major x/y gridlines (both by default). In our case, I
@@ -511,7 +511,7 @@ equivalently, `removeGridX()`.
 
     plotCount(countDat2) + rotateTextX() + removeGridX()
 
-![](overview_files/figure-markdown_strict/removeGrid-1.png)
+![](./overview_files/figure-markdown_strict/removeGrid-1.png)
 
 This figure looks much better!
 
@@ -590,7 +590,7 @@ different datasets.
           dfCount(largeIntDat, "col"), table(largeIntDat$col),
           dfCount(largeCharDat, "col"), table(largeCharDat$col), 
           dfCount(smallDat, "col"), table(smallDat$col),
-          times = 50
+          times = 25
         )
 
 <table>
@@ -607,83 +607,83 @@ different datasets.
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, &quot;day&quot;)</td>
-<td align="right">15.615270</td>
-<td align="right">16.376223</td>
-<td align="right">16.165065</td>
-<td align="right">22.550748</td>
-<td align="right">50</td>
+<td align="right">18.700634</td>
+<td align="right">19.086802</td>
+<td align="right">18.984992</td>
+<td align="right">20.116670</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">129.680449</td>
-<td align="right">136.883097</td>
-<td align="right">133.880697</td>
-<td align="right">191.986486</td>
-<td align="right">50</td>
+<td align="right">143.328236</td>
+<td align="right">150.349177</td>
+<td align="right">145.770343</td>
+<td align="right">224.380886</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, &quot;dest&quot;)</td>
-<td align="right">18.204803</td>
-<td align="right">21.685693</td>
-<td align="right">18.744885</td>
-<td align="right">79.257675</td>
-<td align="right">50</td>
+<td align="right">21.243417</td>
+<td align="right">21.873820</td>
+<td align="right">21.669132</td>
+<td align="right">23.390072</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">23.763228</td>
-<td align="right">26.850362</td>
-<td align="right">25.644443</td>
-<td align="right">35.275563</td>
-<td align="right">50</td>
+<td align="right">34.148822</td>
+<td align="right">40.728779</td>
+<td align="right">34.824378</td>
+<td align="right">132.295812</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, &quot;col&quot;)</td>
-<td align="right">100.313714</td>
-<td align="right">106.752154</td>
-<td align="right">104.755505</td>
-<td align="right">166.337096</td>
-<td align="right">50</td>
+<td align="right">122.968302</td>
+<td align="right">130.151491</td>
+<td align="right">124.686776</td>
+<td align="right">212.270203</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">984.861953</td>
-<td align="right">1034.237206</td>
-<td align="right">1024.950235</td>
-<td align="right">1117.865360</td>
-<td align="right">50</td>
+<td align="right">1107.437518</td>
+<td align="right">1133.423200</td>
+<td align="right">1120.270601</td>
+<td align="right">1191.090891</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, &quot;col&quot;)</td>
-<td align="right">100.102959</td>
-<td align="right">108.058195</td>
-<td align="right">103.266845</td>
-<td align="right">167.133565</td>
-<td align="right">50</td>
+<td align="right">122.582447</td>
+<td align="right">125.926937</td>
+<td align="right">124.359272</td>
+<td align="right">135.238421</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">180.731089</td>
-<td align="right">210.637040</td>
-<td align="right">194.355734</td>
-<td align="right">301.989048</td>
-<td align="right">50</td>
+<td align="right">213.407223</td>
+<td align="right">253.260294</td>
+<td align="right">231.804597</td>
+<td align="right">302.335187</td>
+<td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, &quot;col&quot;)</td>
-<td align="right">2.051834</td>
-<td align="right">4.008136</td>
-<td align="right">2.456300</td>
-<td align="right">80.499845</td>
-<td align="right">50</td>
+<td align="right">2.263357</td>
+<td align="right">2.590089</td>
+<td align="right">2.557577</td>
+<td align="right">4.393575</td>
+<td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.117916</td>
-<td align="right">1.241195</td>
-<td align="right">1.222011</td>
-<td align="right">1.987325</td>
-<td align="right">50</td>
+<td align="right">1.229889</td>
+<td align="right">1.352525</td>
+<td align="right">1.368781</td>
+<td align="right">1.493701</td>
+<td align="right">25</td>
 </tr>
 </tbody>
 </table>
