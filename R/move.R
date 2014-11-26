@@ -60,10 +60,7 @@ moveBack_ <- function(df, cols) {
 
 
 bindDfEnds <- function(df, cols, dir = 1) {
-	if (!requireNamespace("dplyr", quietly = TRUE)) {
-		stop("`dplyr` needed for this function to work. Please install it.",
-				 call. = FALSE)
-	}
+	rsaladRequire("dplyr")
 
 	stopifnot(
 		is.data.frame(df),

@@ -36,10 +36,7 @@ NULL
 #' @export
 #' @rdname ggplotLayers
 removeGrid <- function(x = TRUE, y = TRUE) {
-	if (!requireNamespace("ggplot2", quietly = TRUE)) {
-		stop("`ggplot2` needed for this function to work. Please install it.",
-				 call. = FALSE)
-	}
+	rsaladRequire("ggplot2")
 
 	p <- ggplot2::theme(panel.grid.minor = ggplot2::element_blank())
 	if (x) {

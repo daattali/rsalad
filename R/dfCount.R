@@ -49,14 +49,8 @@
 #' @seealso \code{\link{plotCount}}
 #' @importFrom dplyr n
 dfCount <- function(df, col, sort = TRUE, name = "total") {
-	if (!requireNamespace("dplyr", quietly = TRUE)) {
-		stop("`dplyr` needed for this function to work. Please install it.",
-				 call. = FALSE)
-	}
-	if (!requireNamespace("lazyeval", quietly = TRUE)) {
-		stop("`lazyeval` needed for this function to work. Please install it.",
-				 call. = FALSE)
-	}
+	rsaladRequire("dplyr")
+	rsaladRequire("lazyeval")
 
 	# Check parameters
 	stopifnot(

@@ -17,3 +17,11 @@ is.string <- function(x) {
 dotsToChar <- function(...) {
 	as.character(substitute(list(...)))[-1L]
 }
+
+# Check if a required package for a function can be loaded
+rsaladRequire <- function(pkg) {
+	if (!requireNamespace(pkg, quietly = TRUE)) {
+		stop(paste0(pkg, " required for this function to work. Please install it."),
+				 call. = FALSE)
+	}
+}

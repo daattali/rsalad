@@ -26,10 +26,7 @@
 #' }
 #' @seealso \code{\link{dfCount}}
 plotCount <- function(x) {
-	if (!requireNamespace("ggplot2", quietly = TRUE)) {
-		stop("`ggplot2` needed for this function to work. Please install it.",
-				 call. = FALSE)
-	}
+	rsaladRequire("ggplot2")
 
 	# Convert the input to a data.frame, in case it was a table or a tbl_df
 	x <- data.frame(x)
