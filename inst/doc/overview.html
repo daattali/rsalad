@@ -10,7 +10,7 @@
 
 <meta name="author" content="Dean Attali" />
 
-<meta name="date" content="2014-11-26" />
+<meta name="date" content="2014-11-27" />
 
 <title>Package rsalad</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Package rsalad</h1>
 <h4 class="author"><em>Dean Attali</em></h4>
-<h4 class="date"><em>2014-11-26</em></h4>
+<h4 class="date"><em>2014-11-27</em></h4>
 </div>
 
 
@@ -455,6 +455,52 @@ fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span
 </div>
 <div id="other-functions" class="section level2">
 <h2>Other functions</h2>
+<div id="spinmyr-create-markdownhtml-reports-from-r-scripts-with-no-hassle" class="section level4">
+<h4><code>spinMyR()</code>: create markdown/HTML reports from R scripts with no hassle</h4>
+<p><code>spinMyR()</code> is an improvement on <code>knitr::spin</code>. <code>spin</code> is great and easy when all you need to do is convert an R script to markdown/HTML and everything lives in the same directory. But if you’ve ever tried using <code>spin</code> on an R script and got confused about working directories or tried changing the output location, you will love <code>spinMyR</code>. Since <code>spin</code> assumes that the working directory is the directory where the script is, all the paths in the script must change if you are running the script manually or using spin.<br />I have battled with <code>spin</code> for a total of more than a full day, and the result is <code>spinMyR</code>. <code>spinMyR</code> makes it easy to use spin on R scripts that require a certain working directory that is not the script’s directory, while allowing the script to still function on its own. <code>spinMyR</code> also lets you select where to output the results, and adds several more features.</p>
+<p>For example, assume we have an R script that reads a data file, generates a figure, and saves a results table. Native <code>spin</code> works great on simple directory structures like these:</p>
+<pre><code>- project
+  |- subproject
+     |- input.csv
+     |- script.R</code></pre>
+<p>The resulting directory structure after spinning would be</p>
+<pre><code>- project
+  |- subproject
+     |- markdown-figs
+        |- fig1.png
+     |- input.csv
+     |- script.R
+     |- script.Rmd
+     |- script.md
+     |- script.HTML
+     |- output.csv</code></pre>
+<p>But here is a more realistic initial directory tree:</p>
+<pre><code>- project
+  |- subproject
+     |- data
+        |- input.csv
+     |- R
+        |- script.R </code></pre>
+<p>Now if we want <code>knitr::spin</code> to work, the path to the input would have to be relative to the <code>R</code> directory. But if our working directory is <code>project</code>, then the path to the input needs to be relative to <code>project</code>. This means that we can’t use the exact same code to source the file vs <code>spin</code>-ing the file. A similar problem happens if you want to create files from the script. And another problem arises if you want to put the resulting md/HTML in a different directory - that is not possible with simple <code>spin</code>.<br /><code>spinMyR</code> fixes all these issues, and more. Assuming we are currently in the <code>project</code> directory, we could use the following command to generate an appropriate tree structure:</p>
+<pre><code>spinMyR(file = file.path(&quot;R&quot;, &quot;script.R&quot;), wd = &quot;subproject&quot;,
+        outDir = &quot;reports&quot;, figDir = &quot;myfigs&quot;)
+
+- project
+  |- subproject
+     |- data
+        |- input.csv
+     |- R
+        |- script.R 
+     |- reports
+        |- myfigs
+           |- fig1.png
+        |- script.Rmd
+        |- script.md
+        |- script.HTML
+     |- output
+        |- output.csv</code></pre>
+<p>For more information, see <code>?rsalad::spinMyR</code>.</p>
+</div>
 <div id="tolowerfirst-convert-first-character-to-lower-case" class="section level4">
 <h4><code>tolowerfirst()</code>: convert first character to lower case</h4>
 <p><code>rsalad</code> provides another function that can sometimes become handy. <code>tolowerfirst()</code> can be used to convert the first letter of a string (or a vector of strings) into lower case. This can be useful, for example, when columns of a data.frame do not follow a consistent capitalization and you would like to lower-case all first letters.</p>
@@ -512,82 +558,82 @@ m &lt;-<span class="st"> </span>
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, “day”)</td>
-<td align="right">19.724240</td>
-<td align="right">23.097939</td>
-<td align="right">21.196983</td>
-<td align="right">46.990535</td>
+<td align="right">19.457962</td>
+<td align="right">21.054689</td>
+<td align="right">20.050100</td>
+<td align="right">30.103709</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">147.472792</td>
-<td align="right">178.278765</td>
-<td align="right">158.432894</td>
-<td align="right">331.514732</td>
+<td align="right">147.352802</td>
+<td align="right">157.049830</td>
+<td align="right">151.134514</td>
+<td align="right">222.650906</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, “dest”)</td>
-<td align="right">22.131829</td>
-<td align="right">27.707510</td>
-<td align="right">23.751683</td>
-<td align="right">51.019620</td>
+<td align="right">22.214425</td>
+<td align="right">23.253596</td>
+<td align="right">22.710818</td>
+<td align="right">33.426422</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">33.246849</td>
-<td align="right">42.231798</td>
-<td align="right">36.979250</td>
-<td align="right">83.090822</td>
+<td align="right">28.012940</td>
+<td align="right">38.881275</td>
+<td align="right">29.236664</td>
+<td align="right">105.304835</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, “col”)</td>
-<td align="right">131.066745</td>
-<td align="right">146.980376</td>
-<td align="right">138.015841</td>
-<td align="right">234.460794</td>
+<td align="right">128.733532</td>
+<td align="right">131.233974</td>
+<td align="right">130.679246</td>
+<td align="right">140.879554</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">1120.304297</td>
-<td align="right">1280.727743</td>
-<td align="right">1234.615711</td>
-<td align="right">1645.513517</td>
+<td align="right">1120.724258</td>
+<td align="right">1174.773094</td>
+<td align="right">1150.399786</td>
+<td align="right">1350.283167</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, “col”)</td>
-<td align="right">129.965064</td>
-<td align="right">151.429195</td>
-<td align="right">135.810014</td>
-<td align="right">253.972585</td>
+<td align="right">127.699653</td>
+<td align="right">131.151017</td>
+<td align="right">130.163129</td>
+<td align="right">143.672588</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">217.122366</td>
-<td align="right">283.615536</td>
-<td align="right">283.415533</td>
-<td align="right">452.598135</td>
+<td align="right">218.865496</td>
+<td align="right">264.246021</td>
+<td align="right">290.969915</td>
+<td align="right">310.356788</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, “col”)</td>
-<td align="right">2.245687</td>
-<td align="right">3.167812</td>
-<td align="right">2.794268</td>
-<td align="right">5.258155</td>
+<td align="right">2.271576</td>
+<td align="right">2.612295</td>
+<td align="right">2.612230</td>
+<td align="right">3.087255</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.284953</td>
-<td align="right">1.619460</td>
-<td align="right">1.420146</td>
-<td align="right">3.388050</td>
+<td align="right">1.246737</td>
+<td align="right">1.392055</td>
+<td align="right">1.367549</td>
+<td align="right">2.124876</td>
 <td align="right">25</td>
 </tr>
 </tbody>

@@ -523,6 +523,86 @@ For more information, see `?rsalad::ggplotLayers`.
 Other functions
 ---------------
 
+#### `spinMyR()`: create markdown/HTML reports from R scripts with no hassle
+
+`spinMyR()` is an improvement on `knitr::spin`. `spin` is great and easy
+when all you need to do is convert an R script to markdown/HTML and
+everything lives in the same directory. But if you've ever tried using
+`spin` on an R script and got confused about working directories or
+tried changing the output location, you will love `spinMyR`. Since
+`spin` assumes that the working directory is the directory where the
+script is, all the paths in the script must change if you are running
+the script manually or using spin.  
+I have battled with `spin` for a total of more than a full day, and the
+result is `spinMyR`. `spinMyR` makes it easy to use spin on R scripts
+that require a certain working directory that is not the script's
+directory, while allowing the script to still function on its own.
+`spinMyR` also lets you select where to output the results, and adds
+several more features.
+
+For example, assume we have an R script that reads a data file,
+generates a figure, and saves a results table. Native `spin` works great
+on simple directory structures like these:
+
+    - project
+      |- subproject
+         |- input.csv
+         |- script.R
+
+The resulting directory structure after spinning would be
+
+    - project
+      |- subproject
+         |- markdown-figs
+            |- fig1.png
+         |- input.csv
+         |- script.R
+         |- script.Rmd
+         |- script.md
+         |- script.HTML
+         |- output.csv
+
+But here is a more realistic initial directory tree:
+
+    - project
+      |- subproject
+         |- data
+            |- input.csv
+         |- R
+            |- script.R 
+
+Now if we want `knitr::spin` to work, the path to the input would have
+to be relative to the `R` directory. But if our working directory is
+`project`, then the path to the input needs to be relative to `project`.
+This means that we can't use the exact same code to source the file vs
+`spin`-ing the file. A similar problem happens if you want to create
+files from the script. And another problem arises if you want to put the
+resulting md/HTML in a different directory - that is not possible with
+simple `spin`.  
+`spinMyR` fixes all these issues, and more. Assuming we are currently in
+the `project` directory, we could use the following command to generate
+an appropriate tree structure:
+
+    spinMyR(file = file.path("R", "script.R"), wd = "subproject",
+            outDir = "reports", figDir = "myfigs")
+
+    - project
+      |- subproject
+         |- data
+            |- input.csv
+         |- R
+            |- script.R 
+         |- reports
+            |- myfigs
+               |- fig1.png
+            |- script.Rmd
+            |- script.md
+            |- script.HTML
+         |- output
+            |- output.csv
+
+For more information, see `?rsalad::spinMyR`.
+
 #### `tolowerfirst()`: convert first character to lower case
 
 `rsalad` provides another function that can sometimes become handy.
@@ -607,82 +687,82 @@ different datasets.
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, &quot;day&quot;)</td>
-<td align="right">18.700634</td>
-<td align="right">19.086802</td>
-<td align="right">18.984992</td>
-<td align="right">20.116670</td>
+<td align="right">18.870344</td>
+<td align="right">23.100372</td>
+<td align="right">19.413171</td>
+<td align="right">108.670695</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">143.328236</td>
-<td align="right">150.349177</td>
-<td align="right">145.770343</td>
-<td align="right">224.380886</td>
+<td align="right">144.329652</td>
+<td align="right">148.783484</td>
+<td align="right">147.794543</td>
+<td align="right">158.149769</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, &quot;dest&quot;)</td>
-<td align="right">21.243417</td>
-<td align="right">21.873820</td>
-<td align="right">21.669132</td>
-<td align="right">23.390072</td>
+<td align="right">22.966822</td>
+<td align="right">23.958212</td>
+<td align="right">23.667855</td>
+<td align="right">28.685619</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">34.148822</td>
-<td align="right">40.728779</td>
-<td align="right">34.824378</td>
-<td align="right">132.295812</td>
+<td align="right">31.256756</td>
+<td align="right">41.874477</td>
+<td align="right">33.127682</td>
+<td align="right">110.787763</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, &quot;col&quot;)</td>
-<td align="right">122.968302</td>
-<td align="right">130.151491</td>
-<td align="right">124.686776</td>
-<td align="right">212.270203</td>
+<td align="right">123.306079</td>
+<td align="right">130.090379</td>
+<td align="right">126.263482</td>
+<td align="right">180.891815</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">1107.437518</td>
-<td align="right">1133.423200</td>
-<td align="right">1120.270601</td>
-<td align="right">1191.090891</td>
+<td align="right">1115.395427</td>
+<td align="right">1164.128103</td>
+<td align="right">1137.832570</td>
+<td align="right">1351.958495</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, &quot;col&quot;)</td>
-<td align="right">122.582447</td>
-<td align="right">125.926937</td>
-<td align="right">124.359272</td>
-<td align="right">135.238421</td>
+<td align="right">123.149929</td>
+<td align="right">126.547955</td>
+<td align="right">125.426846</td>
+<td align="right">131.508075</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">213.407223</td>
-<td align="right">253.260294</td>
-<td align="right">231.804597</td>
-<td align="right">302.335187</td>
+<td align="right">216.466946</td>
+<td align="right">248.217448</td>
+<td align="right">226.735878</td>
+<td align="right">304.437051</td>
 <td align="right">25</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, &quot;col&quot;)</td>
-<td align="right">2.263357</td>
-<td align="right">2.590089</td>
-<td align="right">2.557577</td>
-<td align="right">4.393575</td>
+<td align="right">2.262946</td>
+<td align="right">2.561982</td>
+<td align="right">2.563741</td>
+<td align="right">3.251624</td>
 <td align="right">25</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.229889</td>
-<td align="right">1.352525</td>
-<td align="right">1.368781</td>
-<td align="right">1.493701</td>
+<td align="right">1.243860</td>
+<td align="right">4.867302</td>
+<td align="right">1.355632</td>
+<td align="right">89.456820</td>
 <td align="right">25</td>
 </tr>
 </tbody>

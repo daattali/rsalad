@@ -39,6 +39,17 @@ detailed explanation of the function. For example `?rsalad::moveFront`.
 Below is a very brief introduction to the functions in rsalad. The package
 must first be loaded for the examples to work `library("rsalad")`.
 
+### `spinMyR()`: create markdown/HTML reports from R scripts with no hassle
+`spinMyR()` is an improvement on `knitr::spin`. `spinMyR` makes it
+easy to use spin on R scripts that require a certain working directory that is
+not the script's directory, while allowing the script to still function
+on its own.  `spinMyR` also lets you select where to output the results, and
+adds several more features.
+
+```
+spinMyR("script.R", wd = "R", outDir = "reports", figDir = "figs")
+```
+
 ### `%nin%` and `notIn()`
 Determine if values in the first argument don't exist in the second argument.
 Opposite of the `%in%` operator.
