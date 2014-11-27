@@ -144,9 +144,7 @@ spinMyR <- function(file, wd, outDir, figDir,
 	# This is the guts of this function - take the R script and produce HTML
 	# in a few simple steps
 	tryCatch({
-		print(file)
 		knitr::spin(file, format = "Rmd", knit = FALSE)
-		print("A")
 		file.rename(fileRmdOriginal,
 								fileRmd)
 		knitr::knit(fileRmd,
