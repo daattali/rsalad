@@ -72,8 +72,12 @@ spinMyR <- function(file, wd, outDir, figDir,
 	if (missing(wd)) {
 		wd <- getwd()
 	}
-
-	wd <- normalizePath(wd)
+	suppressWarnings({
+		wd <- normalizePath(wd)
+	})
+	if (!R.utils::isDirectory(wd)) {
+		stop("Invalid `wd` argument. Could not find directory: ", wd)
+	}
 
 	# Determine the path fo the input file, either absolute path or relative to wd
 	if (!R.utils::isAbsolutePath(file)) {
@@ -84,7 +88,7 @@ spinMyR <- function(file, wd, outDir, figDir,
 	})
 
 	if (!R.utils::isFile(file)) {
-		stop("Could not find input file: ", file)
+		stop("Invalid `file` argument. Could not find input file: ", file)
 	}
 
 	inputDir <- dirname(file)
