@@ -62,16 +62,28 @@ spinMyR <- function(file, wd, outDir, figDir,
 										chunkOpts = list(tidy = FALSE), verbose = FALSE) {
 	rsaladRequire("knitr")
 	rsaladRequire("markdown")
+	rsaladRequire("R.utils")
 
-	# Default working director is where the user is right now
+	if (missing(file)) {
+		stop("`file` argument was not supplied.")
+	}
+
+	# Default working directory is where the user is right now
 	if (missing(wd)) {
 		wd <- getwd()
 	}
 
 	wd <- normalizePath(wd)
-	file <- file.path(wd, file) %>% normalizePath
 
-	if (!file.exists(file)) {
+	# Determine the path fo the input file, either absolute path or relative to wd
+	if (!R.utils::isAbsolutePath(file)) {
+		file <- file.path(wd, file)
+	}
+	suppressWarnings({
+		file <- normalizePath(file)
+	})
+
+	if (!R.utils::isFile(file)) {
 		stop("Could not find input file: ", file)
 	}
 
@@ -81,11 +93,11 @@ spinMyR <- function(file, wd, outDir, figDir,
 	# relative to the working directory
 	if (missing(outDir)) {
 		outDir <- inputDir
-	} else {
+	} else if(!R.utils::isAbsolutePath(outDir)) {
 		outDir <- file.path(wd, outDir)
 	}
 	dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
-	outDir %<>% normalizePath
+	outDir <- normalizePath(outDir)
 
 	if (missing(figDir)) {
 		figDir <- "markdown-figs"

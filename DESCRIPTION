@@ -2,10 +2,11 @@ Package: rsalad
 Title: A mix of useful R functions that are good for you
 Version: 0.0.1.2
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
-Description: This package provides a collection of useful R functions that
-    I've found myself reusing often.  While there isn't a common specific theme
-    to all these functions, they are either for manipulating data frames,
-    improving ggplot2 plots, or productivity tools.
+Description: Collection of functions that help with easily manipulating
+    data.frames (e.g.converting variables to factors, rearranging variables),
+    improving ggplot2 plots (e.g. removing certain gridlines, rotating axis
+    labels), and improve usability and functionality of knitr::spin (e.g. better
+    handling of working directories and output directories).
 URL: https://github.com/daattali/rsalad
 Depends:
     R (>= 3.1.0)
@@ -19,6 +20,7 @@ Suggests:
     markdown (>= 0.7),
     microbenchmark (>= 1.4),
     nycflights13 (>= 0.1),
+    R.utils (>= 1.34.0),
     testthat (>= 0.9.1)
 License: MIT + file LICENSE
 LazyData: true
