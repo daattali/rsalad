@@ -3,8 +3,8 @@
 \alias{spinMyR}
 \title{Create markdown/HTML reports from R script with no hassle}
 \usage{
-spinMyR(file, wd, outDir, figDir, chunkOpts = list(tidy = FALSE),
-  verbose = FALSE)
+spinMyR(file, wd, outDir, figDir, params = list(), chunkOpts = list(tidy =
+  FALSE), verbose = FALSE)
 }
 \arguments{
 \item{file}{The path to the R script (if \code{wd} is provided, then this

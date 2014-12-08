@@ -58,7 +58,8 @@
 #'   }
 #' }
 #' @seealso \code{\link[knitr]{spin}}
-spinMyR <- function(file, wd, outDir, figDir,
+# TODO document params paramter, mention that paths work both relative and solute
+spinMyR <- function(file, wd, outDir, figDir, params = list(),
 										chunkOpts = list(tidy = FALSE), verbose = FALSE) {
 	rsaladRequire("knitr")
 	rsaladRequire("markdown")
@@ -136,6 +137,18 @@ spinMyR <- function(file, wd, outDir, figDir,
 													 knitr::opts_chunk$get("fig.path"))
 	dir.create(fullFigPath, recursive = TRUE, showWarnings = FALSE)
 
+
+	# Create any paramters that should be visible to the script in a new
+	# environment so that we can easily attach and detach them without affecting
+	# the global environment
+	spinMyR_Env <- new.env()
+	invisible(
+		lapply(names(params), function(x) {
+			spinMyR_Env[[x]] <- params[[x]]
+		})
+	)
+	attach(spinMyR_Env)
+
 	# -------
 
 	# Define a function to clean up all the directories and settings we changed
@@ -155,6 +168,10 @@ spinMyR <- function(file, wd, outDir, figDir,
 		# Restore original knitr and chunk options, to minimize unwanted side-effects
 		knitr::opts_knit$set(oldOptsKnit)
 		knitr::opts_chunk$set(oldOptsChunk)
+
+		# Detach the environment we created with the parameters the user passed in
+		# so that these variables won't exist anymore
+		detach(spinMyR_Env)
 	}
 
 	# This is the guts of this function - take the R script and produce HTML
