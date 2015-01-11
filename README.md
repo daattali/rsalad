@@ -27,10 +27,14 @@ devtools::install_github("daattali/rsalad")
 ## Getting started
 
 There are many different usecases for rsalad.  See the
-[vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/overview.md)
-for a more detailed walk-through of the package.
+[overview vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/overview.md)
+for a more detailed walk-through of the package or the
+[spinMyR vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/spinMyR.md) for
+details about the `spinMyR()` function.
 ```
+browseVignettes("rsalad")
 vignette("overview", "rsalad")
+vignette("spinMyR", "rsalad")
 ```
 
 Alternatively, see the help file for any specific function for a complete
