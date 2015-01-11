@@ -361,98 +361,9 @@ For more information, see `?rsalad::ggplotLayers`.
 ## Other functions
 
 #### `spinMyR()`: create markdown/HTML reports from R scripts with no hassle
-`spinMyR()` is an improvement on `knitr::spin` that adds flexibility in several
-ways. `spin` is great and easy when all you need to do is convert an R script to
-markdown/HTML and everything lives in the same directory.  But if you've ever
-tried using `spin` on an R script and got confused about working directories or
-tried changing the output location, you will love `spinMyR`.  Since `spin`
-assumes that the working directory is the directory where the script is, all the
-paths in the script must change if you are running the script manually or using
-spin.  
+See the [spinMyR vignette](spinMyR.md) for information about this
+function.
 
-I have battled with `spin` for too many hours, and the result is `spinMyR`.
-`spinMyR` makes it easy to use spin on R scripts that require a certain working
-directory that is not the script's directory, while allowing the script to still
-function on its own.  `spinMyR` also lets you select where to output the
-results, and adds several more features.
-
-`spinMyR` can come in very handy when writing a script that can be used to
-analyze a certain type of data, and you want to be able to easily run the script
-on different datasets.  
-
-For example, assume we have an R script that reads a data file and produced a
-short report while also generating a figure. Native `spin` works great on simple
-directory structures like these:
-
-```
-- project
-  |- subproject
-     |- input.csv
-     |- script.R
-```
-
-The resulting directory structure after spinning would be
-
-```
-- project
-  |- subproject
-     |- markdown-figs
-        |- fig1.png
-     |- input.csv
-     |- script.R
-     |- script.Rmd
-     |- script.md
-     |- script.HTML
-```
-
-But here is a more realistic initial directory tree:
-
-```
-- project
-  |- subproject
-     |- data
-        |- input.csv
-     |- R
-        |- script.R 
-```
-
-Now if we want `knitr::spin` to work, the path to the input would have to be
-relative to the `R` directory. But if our working directory is `project`, then
-the path to the input needs to be relative to `project`.  This means that
-we can't use the exact same code to source the file vs `spin`-ing the file. 
-A similar problem happens if you want to create files from the script.  And
-another problem arises if you want to put the resulting md/HTML in a different
-directory - that is not possible with simple `spin` (as far as I know).  
-
-`spinMyR` fixes all these issues, and more. Assuming we are currently in the 
-`project` directory, we could use the following command to generate an
-appropriate tree structure:
-
-```
-spinMyR(file = file.path("R", "script.R"), wd = "subproject",
-        outDir = "reports", figDir = "myfigs")
-
-- project
-  |- subproject
-     |- data
-        |- input.csv
-     |- R
-        |- script.R 
-     |- reports
-        |- myfigs
-           |- fig1.png
-        |- script.Rmd
-        |- script.md
-        |- script.HTML
-```
-
-One particular case when this kind of directory structure makes sense is when
-you have many different datasets and want to store them separately from the
-scripts or from the output.  You can imagine having "input-dean.csv" and
-"input-john.csv" as two different datasets, with corresponding output in
-"reports/dean/" and "reports/john/".
-
-For more information, see `?rsalad::spinMyR`.
 
 #### `tolowerfirst()`: convert first character to lower case
 
@@ -550,16 +461,16 @@ m <-
 
 |expr                         |        min|       mean|     median|        max| neval|
 |:----------------------------|----------:|----------:|----------:|----------:|-----:|
-|dfCount(fDat, "day")         |  15649.839|  16039.499|  16034.332|  16401.963|    10|
-|table(fDat$day)              | 108979.644| 111106.119| 109989.258| 119228.992|    10|
-|dfCount(fDat, "dest")        |  18465.542|  18781.712|  18730.911|  19206.670|    10|
-|table(fDat$dest)             |  23964.262|  26921.593|  26003.466|  30131.171|    10|
-|dfCount(largeIntDat, "col")  | 101819.798| 106519.771| 106332.179| 111141.819|    10|
-|table(largeIntDat$col)       | 838499.915| 889727.634| 892542.567| 957909.607|    10|
-|dfCount(largeCharDat, "col") | 102527.205| 106424.949| 104159.742| 119269.677|    10|
-|table(largeCharDat$col)      | 186889.426| 212388.542| 195742.469| 258933.588|    10|
-|dfCount(smallDat, "col")     |   2103.897|   2308.898|   2313.370|   2524.310|    10|
-|table(smallDat$col)          |    990.005|   1077.130|   1076.506|   1183.534|    10|
+|dfCount(fDat, "day")         |  16.040562|  23.200225|  16.829340|  81.406137|    10|
+|table(fDat$day)              | 107.385227| 114.851055| 113.326170| 125.531885|    10|
+|dfCount(fDat, "dest")        |  18.522721|  21.727131|  19.018822|  39.194054|    10|
+|table(fDat$dest)             |  23.732247|  33.694857|  26.391624|  86.886530|    10|
+|dfCount(largeIntDat, "col")  | 103.985638| 109.889817| 107.496286| 130.434624|    10|
+|table(largeIntDat$col)       | 836.721133| 878.468305| 856.593425| 980.500838|    10|
+|dfCount(largeCharDat, "col") | 104.408983| 112.831973| 104.952734| 170.022333|    10|
+|table(largeCharDat$col)      | 194.324538| 224.756119| 205.117820| 284.979388|    10|
+|dfCount(smallDat, "col")     |   2.164741|   2.754639|   2.495354|   5.193400|    10|
+|table(smallDat$col)          |   1.001368|   1.091241|   1.080905|   1.198928|    10|
 
 Every pair of rows corresponds to counting the same data using `dfCount()` vs
 `table()`.  The results show that:  
