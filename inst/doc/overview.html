@@ -10,7 +10,7 @@
 
 <meta name="author" content="Dean Attali" />
 
-<meta name="date" content="2014-11-27" />
+<meta name="date" content="2015-01-11" />
 
 <title>Package rsalad</title>
 
@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Package rsalad</h1>
 <h4 class="author"><em>Dean Attali</em></h4>
-<h4 class="date"><em>2014-11-27</em></h4>
+<h4 class="date"><em>2015-01-11</em></h4>
 </div>
 
 
@@ -457,8 +457,10 @@ fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span
 <h2>Other functions</h2>
 <div id="spinmyr-create-markdownhtml-reports-from-r-scripts-with-no-hassle" class="section level4">
 <h4><code>spinMyR()</code>: create markdown/HTML reports from R scripts with no hassle</h4>
-<p><code>spinMyR()</code> is an improvement on <code>knitr::spin</code>. <code>spin</code> is great and easy when all you need to do is convert an R script to markdown/HTML and everything lives in the same directory. But if you’ve ever tried using <code>spin</code> on an R script and got confused about working directories or tried changing the output location, you will love <code>spinMyR</code>. Since <code>spin</code> assumes that the working directory is the directory where the script is, all the paths in the script must change if you are running the script manually or using spin.<br />I have battled with <code>spin</code> for a total of more than a full day, and the result is <code>spinMyR</code>. <code>spinMyR</code> makes it easy to use spin on R scripts that require a certain working directory that is not the script’s directory, while allowing the script to still function on its own. <code>spinMyR</code> also lets you select where to output the results, and adds several more features.</p>
-<p>For example, assume we have an R script that reads a data file, generates a figure, and saves a results table. Native <code>spin</code> works great on simple directory structures like these:</p>
+<p><code>spinMyR()</code> is an improvement on <code>knitr::spin</code> that adds flexibility in several ways. <code>spin</code> is great and easy when all you need to do is convert an R script to markdown/HTML and everything lives in the same directory. But if you’ve ever tried using <code>spin</code> on an R script and got confused about working directories or tried changing the output location, you will love <code>spinMyR</code>. Since <code>spin</code> assumes that the working directory is the directory where the script is, all the paths in the script must change if you are running the script manually or using spin.</p>
+<p>I have battled with <code>spin</code> for too many hours, and the result is <code>spinMyR</code>. <code>spinMyR</code> makes it easy to use spin on R scripts that require a certain working directory that is not the script’s directory, while allowing the script to still function on its own. <code>spinMyR</code> also lets you select where to output the results, and adds several more features.</p>
+<p><code>spinMyR</code> can come in very handy when writing a script that can be used to analyze a certain type of data, and you want to be able to easily run the script on different datasets.</p>
+<p>For example, assume we have an R script that reads a data file and produced a short report while also generating a figure. Native <code>spin</code> works great on simple directory structures like these:</p>
 <pre><code>- project
   |- subproject
      |- input.csv
@@ -472,8 +474,7 @@ fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span
      |- script.R
      |- script.Rmd
      |- script.md
-     |- script.HTML
-     |- output.csv</code></pre>
+     |- script.HTML</code></pre>
 <p>But here is a more realistic initial directory tree:</p>
 <pre><code>- project
   |- subproject
@@ -481,7 +482,8 @@ fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span
         |- input.csv
      |- R
         |- script.R </code></pre>
-<p>Now if we want <code>knitr::spin</code> to work, the path to the input would have to be relative to the <code>R</code> directory. But if our working directory is <code>project</code>, then the path to the input needs to be relative to <code>project</code>. This means that we can’t use the exact same code to source the file vs <code>spin</code>-ing the file. A similar problem happens if you want to create files from the script. And another problem arises if you want to put the resulting md/HTML in a different directory - that is not possible with simple <code>spin</code>.<br /><code>spinMyR</code> fixes all these issues, and more. Assuming we are currently in the <code>project</code> directory, we could use the following command to generate an appropriate tree structure:</p>
+<p>Now if we want <code>knitr::spin</code> to work, the path to the input would have to be relative to the <code>R</code> directory. But if our working directory is <code>project</code>, then the path to the input needs to be relative to <code>project</code>. This means that we can’t use the exact same code to source the file vs <code>spin</code>-ing the file. A similar problem happens if you want to create files from the script. And another problem arises if you want to put the resulting md/HTML in a different directory - that is not possible with simple <code>spin</code> (as far as I know).</p>
+<p><code>spinMyR</code> fixes all these issues, and more. Assuming we are currently in the <code>project</code> directory, we could use the following command to generate an appropriate tree structure:</p>
 <pre><code>spinMyR(file = file.path(&quot;R&quot;, &quot;script.R&quot;), wd = &quot;subproject&quot;,
         outDir = &quot;reports&quot;, figDir = &quot;myfigs&quot;)
 
@@ -496,9 +498,8 @@ fDat4_3 &lt;-<span class="st"> </span>fDat3 %&gt;%<span class="st"> </span><span
            |- fig1.png
         |- script.Rmd
         |- script.md
-        |- script.HTML
-     |- output
-        |- output.csv</code></pre>
+        |- script.HTML</code></pre>
+<p>One particular case when this kind of directory structure makes sense is when you have many different datasets and want to store them separately from the scripts or from the output. You can imagine having “input-dean.csv” and “input-john.csv” as two different datasets, with corresponding output in “reports/dean/” and “reports/john/”.</p>
 <p>For more information, see <code>?rsalad::spinMyR</code>.</p>
 </div>
 <div id="tolowerfirst-convert-first-character-to-lower-case" class="section level4">
@@ -542,7 +543,7 @@ m &lt;-<span class="st"> </span>
       <span class="kw">dfCount</span>(largeIntDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(largeIntDat$col),
       <span class="kw">dfCount</span>(largeCharDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(largeCharDat$col), 
       <span class="kw">dfCount</span>(smallDat, <span class="st">&quot;col&quot;</span>), <span class="kw">table</span>(smallDat$col),
-      <span class="dt">times =</span> <span class="dv">25</span>
+      <span class="dt">times =</span> <span class="dv">10</span>
     )</code></pre>
 <table>
 <thead>
@@ -558,83 +559,83 @@ m &lt;-<span class="st"> </span>
 <tbody>
 <tr class="odd">
 <td align="left">dfCount(fDat, “day”)</td>
-<td align="right">19.457962</td>
-<td align="right">21.054689</td>
-<td align="right">20.050100</td>
-<td align="right">30.103709</td>
-<td align="right">25</td>
+<td align="right">15.791686</td>
+<td align="right">16.882561</td>
+<td align="right">16.422306</td>
+<td align="right">21.583267</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$day)</td>
-<td align="right">147.352802</td>
-<td align="right">157.049830</td>
-<td align="right">151.134514</td>
-<td align="right">222.650906</td>
-<td align="right">25</td>
+<td align="right">107.049850</td>
+<td align="right">126.318354</td>
+<td align="right">117.000291</td>
+<td align="right">205.932623</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(fDat, “dest”)</td>
-<td align="right">22.214425</td>
-<td align="right">23.253596</td>
-<td align="right">22.710818</td>
-<td align="right">33.426422</td>
-<td align="right">25</td>
+<td align="right">18.543980</td>
+<td align="right">18.957098</td>
+<td align="right">18.877157</td>
+<td align="right">19.600326</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
 <td align="left">table(fDat$dest)</td>
-<td align="right">28.012940</td>
-<td align="right">38.881275</td>
-<td align="right">29.236664</td>
-<td align="right">105.304835</td>
-<td align="right">25</td>
+<td align="right">24.975525</td>
+<td align="right">37.890115</td>
+<td align="right">26.904219</td>
+<td align="right">124.235093</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeIntDat, “col”)</td>
-<td align="right">128.733532</td>
-<td align="right">131.233974</td>
-<td align="right">130.679246</td>
-<td align="right">140.879554</td>
-<td align="right">25</td>
+<td align="right">102.934423</td>
+<td align="right">120.993076</td>
+<td align="right">105.596365</td>
+<td align="right">190.258593</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeIntDat$col)</td>
-<td align="right">1120.724258</td>
-<td align="right">1174.773094</td>
-<td align="right">1150.399786</td>
-<td align="right">1350.283167</td>
-<td align="right">25</td>
+<td align="right">823.644352</td>
+<td align="right">918.570773</td>
+<td align="right">883.503509</td>
+<td align="right">1211.130787</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(largeCharDat, “col”)</td>
-<td align="right">127.699653</td>
-<td align="right">131.151017</td>
-<td align="right">130.163129</td>
-<td align="right">143.672588</td>
-<td align="right">25</td>
+<td align="right">103.002598</td>
+<td align="right">111.061328</td>
+<td align="right">108.479877</td>
+<td align="right">135.842444</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
 <td align="left">table(largeCharDat$col)</td>
-<td align="right">218.865496</td>
-<td align="right">264.246021</td>
-<td align="right">290.969915</td>
-<td align="right">310.356788</td>
-<td align="right">25</td>
+<td align="right">196.976401</td>
+<td align="right">242.001656</td>
+<td align="right">249.366907</td>
+<td align="right">287.531554</td>
+<td align="right">10</td>
 </tr>
 <tr class="odd">
 <td align="left">dfCount(smallDat, “col”)</td>
-<td align="right">2.271576</td>
-<td align="right">2.612295</td>
-<td align="right">2.612230</td>
-<td align="right">3.087255</td>
-<td align="right">25</td>
+<td align="right">2.092168</td>
+<td align="right">2.491762</td>
+<td align="right">2.330414</td>
+<td align="right">3.777118</td>
+<td align="right">10</td>
 </tr>
 <tr class="even">
 <td align="left">table(smallDat$col)</td>
-<td align="right">1.246737</td>
-<td align="right">1.392055</td>
-<td align="right">1.367549</td>
-<td align="right">2.124876</td>
-<td align="right">25</td>
+<td align="right">1.000634</td>
+<td align="right">1.185000</td>
+<td align="right">1.112244</td>
+<td align="right">1.582688</td>
+<td align="right">10</td>
 </tr>
 </tbody>
 </table>
