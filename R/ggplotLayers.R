@@ -66,10 +66,7 @@ removeGridY <- function() {
 #' @export
 #' @rdname ggplotLayers
 rotateTextX <- function() {
-	if (!requireNamespace("ggplot2", quietly = TRUE)) {
-		stop("`ggplot2` needed for this function to work. Please install it.",
-				 call. = FALSE)
-	}
+  rsaladRequire("ggplot2")
 
 	ggplot2::theme(
 		axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, vjust = 0.5)

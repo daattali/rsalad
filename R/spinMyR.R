@@ -31,14 +31,19 @@
 #' @param chunkOpts List of chunk options to use. See \code{?knitr::opts_chunk}
 #' for a list of chunk options.
 #' @param verbose If TRUE, then show the progress of knitting the document.
+#' @param params A named list of parameters to be passed on to the R script.
+#' For example, if the script to execute assumes that there is a variable named
+#' "DATASET_NAME", then you can use "params = list('DATASET_NAME' = 'oct10dat')"
 #' @section Possible future improvements:
 #' - Add support to only produce one of [Rmd, md, HTML]
 #' @section Detailed Arguments:
+#' All paths given in the arguments can be either absolute or relative.
+#'
 #' The \code{wd} argument is very important and is set to the current working
-#' directory of the caller by default. The path of the input file and the path
-#' of the output directory are both relative to \code{wd}. Moreover, any code
-#' in the R script that reads or writes files will use \code{wd} as the
-#' working directory.
+#' directory by default. The path of the input file and the path of the output
+#' directory are both relative to \code{wd} (unless they are absolute paths).
+#' Moreover, any code in the R script that reads or writes files will use
+#' \code{wd} as the working directory.
 #'
 #' The \code{figDir} argument is relative to the output directory, since the
 #' figures accompanying a markdown file should ideally be placed in the same
@@ -58,137 +63,121 @@
 #'   }
 #' }
 #' @seealso \code{\link[knitr]{spin}}
-# TODO document params paramter, mention that paths work both relative and solute
-spinMyR <- function(file, wd, outDir, figDir, params = list(),
-										chunkOpts = list(tidy = FALSE), verbose = FALSE) {
-	rsaladRequire("knitr")
-	rsaladRequire("markdown")
-	rsaladRequire("R.utils")
+spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
+                    chunkOpts = list(tidy = FALSE, error = FALSE)) {
+  rsaladRequire(c("knitr", "markdown", "R.utils"))
 
-	if (missing(file)) {
-		stop("`file` argument was not supplied.")
-	}
+  if (missing(file)) {
+    stop("`file` argument was not supplied.")
+  }
 
-	# Default working directory is where the user is right now
-	if (missing(wd)) {
-		wd <- getwd()
-	}
-	suppressWarnings({
-		wd <- normalizePath(wd)
-	})
-	if (!R.utils::isDirectory(wd)) {
-		stop("Invalid `wd` argument. Could not find directory: ", wd)
-	}
+  # Default working directory is where the user is right now
+  if (missing(wd)) {
+    wd <- getwd()
+  }
+  suppressWarnings({
+    wd <- normalizePath(wd)
+  })
+  if (!R.utils::isDirectory(wd)) {
+    stop("Invalid `wd` argument. Could not find directory: ", wd)
+  }
 
-	# Determine the path fo the input file, either absolute path or relative to wd
-	if (!R.utils::isAbsolutePath(file)) {
-		file <- file.path(wd, file)
-	}
-	suppressWarnings({
-		file <- normalizePath(file)
-	})
+  # Determine the path fo the input file, either absolute path or relative to wd
+  if (!R.utils::isAbsolutePath(file)) {
+    file <- file.path(wd, file)
+  }
+  suppressWarnings({
+    file <- normalizePath(file)
+  })
 
-	if (!R.utils::isFile(file)) {
-		stop("Invalid `file` argument. Could not find input file: ", file)
-	}
+  if (!R.utils::isFile(file)) {
+    stop("Invalid `file` argument. Could not find input file: ", file)
+  }
 
-	inputDir <- dirname(file)
+  inputDir <- dirname(file)
 
-	# Default output directory is where input is located, otherwise build the path
-	# relative to the working directory
-	if (missing(outDir)) {
-		outDir <- inputDir
-	} else if(!R.utils::isAbsolutePath(outDir)) {
-		outDir <- file.path(wd, outDir)
-	}
-	dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
-	outDir <- normalizePath(outDir)
+  # Default output directory is where input is located, otherwise build the path
+  # relative to the working directory
+  if (missing(outDir)) {
+    outDir <- inputDir
+  } else if(!R.utils::isAbsolutePath(outDir)) {
+    outDir <- file.path(wd, outDir)
+  }
+  dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
+  outDir <- normalizePath(outDir)
 
-	if (missing(figDir)) {
-		figDir <- "markdown-figs"
-	}
+  if (missing(figDir)) {
+    figDir <- "markdown-figs"
+  }
 
-	# Save a copy of the original knitr and chunk options
-	oldOptsKnit <- knitr::opts_knit$get()
-	oldOptsChunk <- knitr::opts_chunk$get()
+  # Get the filenames for all intermediate files
+  fileName <- sub("(\\.[rR])$", "", basename(file))
+  fileRmdOriginal <- file.path(inputDir, paste0(fileName, ".Rmd"))
+  fileRmd <- file.path(outDir, paste0(fileName, ".Rmd"))
+  fileMd <- file.path(outDir, paste0(fileName, ".md"))
+  fileHtml <- file.path(outDir, paste0(fileName, ".html"))
 
-	# Get the filenames for all intermediate files
-	fileName <- sub("(\\.[rR])$", "", basename(file))
-	fileRmdOriginal <- file.path(inputDir, paste0(fileName, ".Rmd"))
-	fileRmd <- file.path(outDir, paste0(fileName, ".Rmd"))
-	fileMd <- file.path(outDir, paste0(fileName, ".md"))
-	fileHtml <- file.path(outDir, paste0(fileName, ".html"))
+  # On Windows (as opposed to unix systems), file.path does not append a
+  # separator at the end, so add one manually to ensure this works
+  # cross-platform
+  figDir <- file.path(figDir, .Platform$file.sep)
 
-	# On Windows (as opposed to unix systems), file.path does not append a
-	# separator at the end, so add one manually to ensure this works
-	# cross-platform
-	figDir <- file.path(figDir, .Platform$file.sep)
+  # Save a copy of the original knitr and chunk options and revert back to them
+  # when the function exits
+  oldOptsKnit <- knitr::opts_knit$get()
+  oldOptsChunk <- knitr::opts_chunk$get()
+  on.exit({
+    knitr::opts_knit$set(oldOptsKnit)
+    knitr::opts_chunk$set(oldOptsChunk)
+  }, add = TRUE)
 
-	# Set up the directories correctly (this took many many hours to figure out..)
-	knitr::opts_knit$set(root.dir = wd)
-	knitr::opts_knit$set(base.dir = outDir)
-	knitr::opts_chunk$set(fig.path = figDir)
+  # Set up the directories correctly (this took many many hours to figure out..)
+  knitr::opts_knit$set(root.dir = wd)
+  knitr::opts_knit$set(base.dir = outDir)
+  knitr::opts_chunk$set(fig.path = figDir)
 
-	# Use the user-defined chunk options
-	knitr::opts_chunk$set(chunkOpts)
+  # Use the user-defined chunk options
+  knitr::opts_chunk$set(chunkOpts)
 
-	# Create the figure directory if it doesn't exist (otherwise we get errors)
-	fullFigPath <- file.path(knitr::opts_knit$get("base.dir"),
-													 knitr::opts_chunk$get("fig.path"))
-	dir.create(fullFigPath, recursive = TRUE, showWarnings = FALSE)
+  # Create the figure directory if it doesn't exist (otherwise we get errors)
+  fullFigPath <- file.path(knitr::opts_knit$get("base.dir"),
+                           knitr::opts_chunk$get("fig.path"))
+  dir.create(fullFigPath, recursive = TRUE, showWarnings = FALSE)
 
 
-	# Create any paramters that should be visible to the script in a new
-	# environment so that we can easily attach and detach them without affecting
-	# the global environment
-	spinMyR_Env <- new.env()
-	invisible(
-		lapply(names(params), function(x) {
-			spinMyR_Env[[x]] <- params[[x]]
-		})
-	)
-	attach(spinMyR_Env)
+  # Create any parameters that should be visible to the script in a new
+  # environment so that we can easily attach and detach them without affecting
+  # the global environment
+  spinMyR_Env <- list2env(params)
+  attach(spinMyR_Env)
+  on.exit(detach(spinMyR_Env), add = TRUE)
 
-	# -------
+  # Some folder cleanup when the function exists
+  on.exit({
+    # Because of a bug in knitr, the figures directory is created in the
+    # working directory with nothing in it, as well as being created where it
+    # should be and with the right files inside. Delete that folder.
+    figDirName <- file.path(dirname(figDir), basename(figDir))
+    suppressWarnings(unlink(figDirName, recursive = TRUE))
 
-	# Define a function to clean up all the directories and settings we changed
-	# This function will be called regardless of whether spinning works
-	# so that side-effects will not persist if an error occurs
-	cleanup <- function() {
-		# Because of a bug in knitr, the figures directory is created in the
-		# working directory as well as where it should be, but with nothing in it
-		# We can't use normalizePath because we don't want to get the trailing
-		# file separator since that will prevent unlink from working properly
-		figDirName <- file.path(dirname(figDir), basename(figDir))
-		suppressWarnings(unlink(figDirName, recursive = TRUE))
-		if (length(list.files(fullFigPath)) == 0) {
-			suppressWarnings(unlink(fullFigPath, recursive = TRUE))
-		}
+    # If no figures are generated, remove the figures folder
+    if (length(list.files(fullFigPath)) == 0) {
+      suppressWarnings(unlink(fullFigPath, recursive = TRUE))
+    }
+  }, add = TRUE)
 
-		# Restore original knitr and chunk options, to minimize unwanted side-effects
-		knitr::opts_knit$set(oldOptsKnit)
-		knitr::opts_chunk$set(oldOptsChunk)
+  # --------
 
-		# Detach the environment we created with the parameters the user passed in
-		# so that these variables won't exist anymore
-		detach(spinMyR_Env)
-	}
+  # This is the guts of this function - take the R script and produce HTML
+  # in a few simple steps
+  knitr::spin(file, format = "Rmd", knit = FALSE)
+  file.rename(fileRmdOriginal,
+              fileRmd)
+  knitr::knit(fileRmd,
+              fileMd,
+              quiet = !verbose)
+  markdown::markdownToHTML(fileMd,
+                           fileHtml)
 
-	# This is the guts of this function - take the R script and produce HTML
-	# in a few simple steps
-	tryCatch({
-		knitr::spin(file, format = "Rmd", knit = FALSE)
-		file.rename(fileRmdOriginal,
-								fileRmd)
-		knitr::knit(fileRmd,
-								fileMd,
-								quiet = !verbose)
-		markdown::markdownToHTML(fileMd,
-														 fileHtml)
-		}, finally = {
-			cleanup()
-		}
-	)
-
-	message(paste0("spinMyR output in: ", outDir))
+  message(paste0("spinMyR output in: ", outDir))
 }

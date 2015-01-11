@@ -1,3 +1,10 @@
+# rsalad 0.0.1.3
+
+2015-01-11
+
+Refactor some code to improve efficiency and update spinMyR documentation. 
+
+
 # rsalad 0.0.1.2
 
 2014-11-26
