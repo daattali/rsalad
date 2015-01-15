@@ -17,9 +17,14 @@
 #' directly and using \code{spin} on it.
 #'
 #' \code{spinMyR} improves basic \code{spin} in a few ways. You get to decide:
-#' - What the working directory ofthe R script is
+#'
+#' - What the working directory of the R script is
+#'
 #' - Where the output files will go
+#'
 #' - Where the figures used in the markdown will go
+#'
+#' - If there are any parameters to pass to the R script
 #' @param file The path to the R script (if \code{wd} is provided, then this
 #' path is relative to \code{wd}).
 #' @param wd The working directory to be used in the R script. See 'Detailed:
@@ -33,7 +38,9 @@
 #' @param verbose If TRUE, then show the progress of knitting the document.
 #' @param params A named list of parameters to be passed on to the R script.
 #' For example, if the script to execute assumes that there is a variable named
-#' "DATASET_NAME", then you can use "params = list('DATASET_NAME' = 'oct10dat')"
+#' \code{DATASET_NAME}, then you can use
+#' \code{params = list('DATASET_NAME' = 'oct10dat')}
+#' @return The path to the output (invisibly).
 #' @section Possible future improvements:
 #' - Add support to only produce one of [Rmd, md, HTML]
 #' @section Detailed Arguments:
@@ -53,16 +60,19 @@
 #' is set to a different directory.
 #' @export
 #' @examples
+#' \dontrun{
 #' if (requireNamespace("knitr", quietly = TRUE)) {
 #'   if (requireNamespace("markdown", quietly = TRUE)) {
-#'      \dontrun{spinMyR("R/script.R")}
-#'      \dontrun{spinMyR("script.R", wd = "R")}
-#'      \dontrun{spinMyR("script.R", wd = "R", outDir = "reports")}
-#'      \dontrun{spinMyR("script.R", wd = "R", outDir = "reports",
-#'               figDir = "figs")}
+#'      spinMyR("R/script.R")
+#'      spinMyR("script.R", wd = "R")
+#'      spinMyR("script.R", wd = "R", outDir = "reports")
+#'      spinMyR("script.R", wd = "R", outDir = "reports",
+#'               figDir = "figs")
 #'   }
 #' }
+#' }
 #' @seealso \code{\link[knitr]{spin}}
+#' @seealso \code{\link[rsalad]{setupSpinMyRtest}}
 spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
                     chunkOpts = list(tidy = FALSE, error = FALSE)) {
   rsaladRequire(c("knitr", "markdown", "R.utils"))
@@ -107,6 +117,8 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   outDir <- normalizePath(outDir)
 
   if (missing(figDir)) {
+    # TODO(daattali) should the name be <input>-figs, to better support
+    # multiple markdowns in the same directory?
     figDir <- "markdown-figs"
   }
 
@@ -179,5 +191,7 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   markdown::markdownToHTML(fileMd,
                            fileHtml)
 
-  message(paste0("spinMyR output in: ", outDir))
+  message(paste0("spinMyR output in\n", outDir))
+
+  invisible(outDir)
 }

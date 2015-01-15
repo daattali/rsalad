@@ -1,6 +1,6 @@
 Package: rsalad
 Title: A mix of useful R functions that are good for you
-Version: 0.0.1.3
+Version: 0.0.2.0
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
 Description: Collection of functions that help with easily manipulating
     data.frames (e.g.converting variables to factors, rearranging variables),

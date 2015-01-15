@@ -10,7 +10,7 @@
 
 <meta name="author" content="Dean Attali" />
 
-<meta name="date" content="2015-01-11" />
+<meta name="date" content="2015-01-15" />
 
 <title>spinMyR</title>
 
@@ -28,38 +28,49 @@
 <div id="header">
 <h1 class="title">spinMyR</h1>
 <h4 class="author"><em>Dean Attali</em></h4>
-<h4 class="date"><em>2015-01-11</em></h4>
+<h4 class="date"><em>2015-01-15</em></h4>
 </div>
 
 
 <div id="spinmyr-create-markdownhtml-reports-from-r-scripts-with-no-hassle" class="section level2">
 <h2><code>spinMyR()</code>: create markdown/HTML reports from R scripts with no hassle</h2>
-<p><code>spinMyR()</code> is an improvement on <code>knitr::spin</code> that adds flexibility in several ways. <code>spin</code> is great and easy when all you need to do is convert an R script to markdown/HTML and everything lives in the same directory. But if you’ve ever tried using <code>spin</code> on an R script and got confused about working directories or tried changing the output location, you will love <code>spinMyR</code>. Since <code>spin</code> assumes that the working directory is the directory where the script is, all the paths in the script must change if you are running the script manually or using spin.</p>
-<p>I have battled with <code>spin</code> for too many hours, and the result is <code>spinMyR</code>. <code>spinMyR</code> makes it easy to use spin on R scripts that require a certain working directory that is not the script’s directory, while allowing the script to still function on its own. <code>spinMyR</code> also lets you select where to output the results, and adds several more features.</p>
+<p><code>spinMyR()</code> is an improvement on <code>knitr::spin</code> that adds flexibility in several ways. <code>spin</code> alone is great when all you need to do is convert a one-off R script to markdown/HTML and everything lives in the same directory. But if you’ve ever tried using <code>spin</code> on an R script and got confused about working directories, tried changing the output location, or wanted to run the same script multiple times but with slightly different parameters/datasets without having to change all your code, you will love <code>spinMyR</code>.</p>
+<p><code>spinMyR</code> is a recommended wrapper to <code>spin</code> when any of the following are true:</p>
+<ul>
+<li><strong>The R script requires a certain working directory that is <em>not</em> the directory in which the script lives</strong> (<code>spin</code> assumes that the working directory for thec code in the script is the directory where the script is, which means that all that paths in the code must change if you are running the script manually vs using <code>spin</code>)<br /></li>
+<li><strong>The results should be produced in a different directory</strong> (with <code>spin</code>, the output will be produced in the directory that the user makes the call from)<br /></li>
+<li><strong>The script has one or more parameters</strong> (and you want to run an identical script multiple times with different parameters/datasets)</li>
+</ul>
+<p>Many real-life data analysis scenarios will use all these features, as illustrated with the examples below. There are several other features that are documented in <code>?rsalad::spinMyR</code>.</p>
+<div id="example-basic-use-case-and-motivation" class="section level3">
+<h3>Example: basic use case and motivation</h3>
 <p><code>spinMyR</code> can come in very handy when writing a script that can be used to analyze a certain type of data, and you want to be able to easily run the script on different datasets.</p>
-<p>For example, assume we have an R script that reads a data file and produced a short report while also generating a figure. Native <code>spin</code> works great on simple directory structures like these:</p>
+<p>Assume we have an R script that reads a data file and produces a short report while also generating a figure. Native <code>spin</code> works great if you have a flat directory structure like this (assume the working directory is inside <code>project</code>):</p>
 <pre><code>- project
   |- subproject
      |- input.csv
      |- script.R</code></pre>
-<p>The resulting directory structure after spinning would be</p>
-<pre><code>- project
-  |- subproject
+<p>After running <code>spin</code>, the resulting directory structure would look like this:</p>
+<pre><code>spin(&quot;subproject/script.R&quot;)
+
+- project
+   |- subproject
      |- markdown-figs
         |- fig1.png
      |- input.csv
      |- script.R
-     |- script.Rmd
-     |- script.md
-     |- script.HTML</code></pre>
-<p>But here is a more realistic initial directory tree:</p>
+   |- script.Rmd
+   |- script.md
+   |- script.html</code></pre>
+<p>Notice that the outputs are produced in the directory where the function called from, completely separated from where the input script is.</p>
+<p>But in a real project, you rarely have everything just lying around in the same folder. Here is an example of a more realistic initial directory structure:</p>
 <pre><code>- project
-  |- subproject
+   |- subproject
      |- data
         |- input.csv
      |- R
         |- script.R</code></pre>
-<p>Now if we want <code>knitr::spin</code> to work, the path to the input would have to be relative to the <code>R</code> directory. But if our working directory is <code>project</code>, then the path to the input needs to be relative to <code>project</code>. This means that we can’t use the exact same code to source the file vs <code>spin</code>-ing the file. A similar problem happens if you want to create files from the script. And another problem arises if you want to put the resulting md/HTML in a different directory - that is not possible with simple <code>spin</code> (as far as I know).</p>
+<p>Now if we want <code>knitr::spin</code> to work, the path to <code>input.csv</code> would have to be relative to the <code>R</code> directory. But if we want to <code>source</code> the file or run it manually, the paths have to be relative to our working directory (<code>project</code>). This means that we can’t use the exact same code to source the file vs <code>spin</code>-ing the file. A similar problem arrises if you want to create files from the R script (<code>spin</code> will assume the working directory of the code is where the code lives, rather than what the project working directory is).<br />Another problem with the flat directory structure is that you may want to controlr where the esulting markdown/HTML reports get generated. <code>spin</code> will create all the outputs in the working directory of the user (as far as I know, you cannot control that behaviour).</p>
 <p><code>spinMyR</code> fixes all these issues, and more. Assuming we are currently in the <code>project</code> directory, we could use the following command to generate an appropriate tree structure:</p>
 <pre><code>spinMyR(file = file.path(&quot;R&quot;, &quot;script.R&quot;), wd = &quot;subproject&quot;,
         outDir = &quot;reports&quot;, figDir = &quot;myfigs&quot;)
@@ -76,8 +87,63 @@
         |- script.Rmd
         |- script.md
         |- script.HTML</code></pre>
-<p>One particular case when this kind of directory structure makes sense is when you have many different datasets and want to store them separately from the scripts or from the output. You can imagine having “input-dean.csv” and “input-john.csv” as two different datasets, with corresponding output in “reports/dean/” and “reports/john/”.</p>
+<p>This non-basic directory structure simply is not achievable with basic <code>spin</code> unfortunately, which is why <code>spinMyR</code> was created.</p>
+</div>
+<div id="example-using-one-script-to-analyze-different-datasets" class="section level3">
+<h3>Example: using one script to analyze different datasets</h3>
+<p>One particular case when this kind of directory structure makes sense is when you have different datasets and different analysis scripts, and you want to be able to run each analysis on each dataset and keep the results organized. I was involved in a few projects that required me to adopt that kind of organization, and <code>spinMyR</code> was developed especially for this use. Imagine having a project structured like this:</p>
+<pre><code>- project
+   |- data
+      |- human.dat
+      |- mouse.dat
+   |- R
+      |- explore.R
+      |- analyze.R</code></pre>
+<p>We can easily use <code>spinMyR</code> to run any of the analysis scripts on any of the datasets. Let’s assume that each analysis script expects there to be a variable named <code>DATASET_NAME</code> that tells the script what data to operate on. The following <code>spinMyR</code> commands illustrate how they can be used to achieve this structure.</p>
+<pre><code>spinMyR(file = &quot;R/explore.R&quot;, outDir = &quot;reportS/human&quot;,
+        params = list(&quot;DATASET_NAME&quot; = &quot;human.dat&quot;))
+spinMyR(file = &quot;R/explore.R&quot;, outDir = &quot;reports/mouse&quot;,
+        params = list(&quot;DATASET_NAME&quot; = &quot;mouse.dat&quot;))
+spinMyR(file = &quot;R/analyze.R&quot;, outDir = &quot;reports/mouse&quot;,
+        params = list(&quot;DATASET_NAME&quot; = &quot;mouse.dat&quot;))
+
+- project
+   |- data
+      |- human.dat
+      |- mouse.dat
+   |- R
+      |- explore.R
+      |- analyze.R
+   |- reports
+      |- human
+         |- explore.R
+      |- mouse
+         |- analyze.R
+         |- explore.R</code></pre>
+<p>A few things to note:</p>
+<ul>
+<li>With <code>spinMyR</code>, the working directory of the code in the script is by default set to be the working directory of the user, rather than the script’s directory<br /></li>
+<li>The output directory by default is the same as the input directory<br /></li>
+<li>The figures directory is set to be relative to the output (trust me when I say that setting this automatically will save you hours of battling with directories)<br /></li>
+<li><code>spinMyR</code> accepts both relative and absolute file paths<br /></li>
+<li>This example uses the <code>params = list()</code> argument, which lets you pass variables to the R script. In this case, I use it to tell the script what dataset to use, and the script assumes a <code>DATASET_NAME</code> variable exists. This of course means that the analysis script has an external dependency by having a variable that is not populated by the script. Some may argue that it’s bad form, but I think this is a fairly clean solution. Moreover, you can always use a default value for variables in your script by having code such as<br /><code>DATASET_NAME &lt;- ifelse(exists(&quot;DATASET_NAME&quot;), DATASET_NAME, &quot;default_data&quot;)</code></li>
+</ul>
+</div>
+<div id="live-example" class="section level3">
+<h3>Live example</h3>
+<p>To try out the differences between <code>knitr::spin</code> and <code>rsalad::spinMyR</code>, I have added a function to the <code>rsalad</code> package that will set up a directory with an R script and a data file so that you can experiment with both functions to see the differences.<br />Run <code>rsalad::setupSpinMyRtest()</code> (you can provide a path as an argument to set up the test in a specific path) and follow the instructions that will show up in the console.</p>
+</div>
+<div id="spin-vs-knit" class="section level3">
+<h3><code>spin</code> vs <code>knit</code></h3>
+<p>If you’re asking why even bother with <code>spin</code> because you always create <code>.Rmd</code> files, then read this section. Disclaimer: I may have a simplistic and non-comprehensive view on <code>spin</code>, but this is why I use it.</p>
+<p>A common approach useRs can take to producing an R markdown document is as follows:<br />1. Write a bunch of interactive statements in an <code>.R</code> script<br />2. Once all the R code is in place, polish the code to make sure it runs smoothly when <code>source</code>d<br />3. Copy the code to a new <code>.Rmd</code> file, add formatting and surround code in code chunks<br />4. You now have duplicated your whole analysis. If you want to change a variable, you must change it in both the <code>.R</code> and the <code>.Rmd</code>.</p>
+<p>Instead of steps 3 and 4, you can just add the formatting and code chunks to the original R script (with <code>#'</code> and <code>#+</code>), so that you still have all your code in one place. Having to manage only one R script as opposed to an R script and an Rmarkdown makes my life much simpler. As a bonus, I also find it much faster to convert R to Rmarkdown like this because each code chunk only has to be defined in one place (<code>#+</code>) rather than in two place (<code>```{r}</code> before and <code>```</code> after).</p>
+</div>
+<div id="more-information" class="section level3">
+<h3>More information</h3>
+<p>To use <code>spinMyR</code>, install <code>rsalad</code> using <code>devtools::install_github(&quot;daattali/rsalad&quot;)</code> and run <code>spinMyR</code> with <code>rsalad::spinMyR()</code>.</p>
 <p>For more information including all features and parameters supported, see <code>?rsalad::spinMyR</code>.</p>
+</div>
 </div>
 
 

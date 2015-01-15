@@ -1,3 +1,11 @@
+# rsalad 0.0.2.0
+
+2015-01-15
+
+- Added `setupSpinMyRtest()` which will set up a test directory to allow users
+to experiment with `spinMyR()`  
+- Complete revamp of the [`spinMyR` vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/spinMyR.md)
+
 # rsalad 0.0.1.3
 
 2015-01-11

@@ -22,12 +22,16 @@ generated for the markdown document. See 'Detailed Arguments'.}
 
 \item{params}{A named list of parameters to be passed on to the R script.
 For example, if the script to execute assumes that there is a variable named
-"DATASET_NAME", then you can use "params = list('DATASET_NAME' = 'oct10dat')"}
+\code{DATASET_NAME}, then you can use
+\code{params = list('DATASET_NAME' = 'oct10dat')}}
 
 \item{verbose}{If TRUE, then show the progress of knitting the document.}
 
 \item{chunkOpts}{List of chunk options to use. See \code{?knitr::opts_chunk}
 for a list of chunk options.}
+}
+\value{
+The path to the output (invisibly).
 }
 \description{
 This function takes a specially formatted R script and converts it to
@@ -48,9 +52,14 @@ directory cannot be easily done in a way that allows both running the script
 directly and using \code{spin} on it.
 
 \code{spinMyR} improves basic \code{spin} in a few ways. You get to decide:
-- What the working directory ofthe R script is
+
+- What the working directory of the R script is
+
 - Where the output files will go
+
 - Where the figures used in the markdown will go
+
+- If there are any parameters to pass to the R script
 }
 \section{Possible future improvements}{
 
@@ -75,17 +84,21 @@ way \code{knitr} works, there are a few known minor issues if \code{figDir}
 is set to a different directory.
 }
 \examples{
+\dontrun{
 if (requireNamespace("knitr", quietly = TRUE)) {
   if (requireNamespace("markdown", quietly = TRUE)) {
-     \dontrun{spinMyR("R/script.R")}
-     \dontrun{spinMyR("script.R", wd = "R")}
-     \dontrun{spinMyR("script.R", wd = "R", outDir = "reports")}
-     \dontrun{spinMyR("script.R", wd = "R", outDir = "reports",
-              figDir = "figs")}
+     spinMyR("R/script.R")
+     spinMyR("script.R", wd = "R")
+     spinMyR("script.R", wd = "R", outDir = "reports")
+     spinMyR("script.R", wd = "R", outDir = "reports",
+              figDir = "figs")
   }
+}
 }
 }
 \seealso{
 \code{\link[knitr]{spin}}
+
+\code{\link[rsalad]{setupSpinMyRtest}}
 }
 
