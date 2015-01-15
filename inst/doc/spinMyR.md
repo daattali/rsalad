@@ -196,9 +196,8 @@ always use a default value for variables in your script by having code such as
 To try out the differences between `knitr::spin` and `rsalad::spinMyR`, I have
 added a function to the `rsalad` package that will set up a directory with 
 an R script and a data file so that you can experiment with both functions to
-see the differences. See `?rsalad::setupSpinMyRtest` for more information.
-Run `rsalad::setupSpinMyRtest()` and follow the instructions that will show up
-in the console.
+see the differences. See `?rsalad::setupSpinMyRtest` for more information and
+to see some simple testing commands.
 
 
 ### `spin` vs `knit`
