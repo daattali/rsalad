@@ -47,7 +47,6 @@
 #' dfCount(infert, "education", sort = FALSE)
 #' data.frame(table(infert$education))
 #' @seealso \code{\link{plotCount}}
-#' @importFrom dplyr n
 dfCount <- function(df, col, sort = TRUE, name = "total") {
 	rsaladRequire("dplyr")
 	rsaladRequire("lazyeval")

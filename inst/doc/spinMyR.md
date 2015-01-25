@@ -94,7 +94,7 @@ This means that we can't use the exact same code to source the file vs
 the R script (`spin` will assume the working directory of the code is where the 
 code lives, rather than what the project working directory is).  
 Another problem with the flat directory structure is that you may want to
-controlr where the esulting markdown/HTML reports get generated. `spin` will
+control where the resulting markdown/HTML reports get generated. `spin` will
 create all the outputs in the working directory of the user (as far as
 I know, you cannot control that behaviour).
 
