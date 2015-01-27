@@ -182,6 +182,7 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
 
   # This is the guts of this function - take the R script and produce HTML
   # in a few simple steps
+  #TODO use spin envir parameter instead of attach/detach?
   knitr::spin(file, format = "Rmd", knit = FALSE)
   file.rename(fileRmdOriginal,
               fileRmd)
