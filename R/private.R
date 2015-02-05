@@ -23,9 +23,65 @@ rsaladRequire <- function(pkgs) {
   invisible(
     lapply(pkgs, function(pkg) {
       if (!requireNamespace(pkg, quietly = TRUE)) {
-        stop(paste0(pkg, " required for this function to work. Please install it."),
+        stop(sprintf("`%s` package is required for this function to work. Please install it.", pkg),
              call. = FALSE)
       }
     })
   )
+}
+
+# Check if a suggested package for a function can be loaded
+rsaladSuggest <- function(pkgs) {
+  invisible(
+    lapply(pkgs, function(pkg) {
+      if (!requireNamespace(pkg, quietly = TRUE)) {
+        warning(sprintf("`%s` package is recommended for this function to work. Please install it if possible.", pkg),
+             call. = FALSE)
+      }
+    })
+  )
+}
+
+isDirectory <- function(pathname) {
+  if (requireNamespace("R.utils", quietly = TRUE)) {
+    return(R.utils::isDirectory(pathname))
+  }
+
+  pathname <- as.character(pathname)
+  fileinfo <- file.info(pathname)
+  if (is.na(fileinfo$isdir)) {
+    return(FALSE)
+  }
+  fileinfo$isdir
+}
+
+isAbsolutePath <- function(pathname) {
+  if (requireNamespace("R.utils", quietly = TRUE)) {
+    return(R.utils::isAbsolutePath(pathname))
+  }
+
+  pathname <- as.character(pathname)
+  if (is.na(pathname) | !nzchar(pathname)) {
+    return(FALSE)
+  }
+  if (regexpr("^~", pathname) != -1L) {
+    return(TRUE)
+  }
+  if (regexpr("^.:(/|\\\\)", pathname) != -1L) {
+    return(TRUE)
+  }
+  FALSE
+}
+
+isFile <- function(pathname) {
+  if (requireNamespace("R.utils", quietly = TRUE)) {
+    return(R.utils::isFile(pathname))
+  }
+
+  pathname <- as.character(pathname)
+  fileinfo <- file.info(pathname)
+  if (is.na(fileinfo$isdir)) {
+    return(FALSE)
+  }
+  !fileinfo$isfile
 }

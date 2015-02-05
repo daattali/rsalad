@@ -40,6 +40,7 @@
 #' For example, if the script to execute assumes that there is a variable named
 #' \code{DATASET_NAME}, then you can use
 #' \code{params = list('DATASET_NAME' = 'oct10dat')}
+#' @param warn If TRUE, then show warnings (recommended to keep this on)
 #' @return The path to the output (invisibly).
 #' @section Possible future improvements:
 #' - Add support to only produce one of [Rmd, md, HTML]
@@ -74,8 +75,13 @@
 #' @seealso \code{\link[knitr]{spin}}
 #' @seealso \code{\link[rsalad]{setupSpinMyRtest}}
 spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
-                    chunkOpts = list(tidy = FALSE, error = FALSE)) {
-  rsaladRequire(c("knitr", "markdown", "R.utils"))
+                    chunkOpts = list(tidy = FALSE, error = FALSE),
+                    warn = TRUE) {
+  rsaladRequire(c("knitr", "markdown"))
+
+  if (warn) {
+    rsaladSuggest("R.utils")
+  }
 
   if (missing(file)) {
     stop("`file` argument was not supplied.")
@@ -88,19 +94,19 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   suppressWarnings({
     wd <- normalizePath(wd)
   })
-  if (!R.utils::isDirectory(wd)) {
+  if (!isDirectory(wd)) {
     stop("Invalid `wd` argument. Could not find directory: ", wd)
   }
 
   # Determine the path fo the input file, either absolute path or relative to wd
-  if (!R.utils::isAbsolutePath(file)) {
+  if (!isAbsolutePath(file)) {
     file <- file.path(wd, file)
   }
   suppressWarnings({
     file <- normalizePath(file)
   })
 
-  if (!R.utils::isFile(file)) {
+  if (!isFile(file)) {
     stop("Invalid `file` argument. Could not find input file: ", file)
   }
 
@@ -110,7 +116,7 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   # relative to the working directory
   if (missing(outDir)) {
     outDir <- inputDir
-  } else if(!R.utils::isAbsolutePath(outDir)) {
+  } else if(!isAbsolutePath(outDir)) {
     outDir <- file.path(wd, outDir)
   }
   dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
