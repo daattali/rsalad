@@ -42,11 +42,8 @@ rsaladSuggest <- function(pkgs) {
   )
 }
 
-isDirectory <- function(pathname) {
-  if (requireNamespace("R.utils", quietly = TRUE)) {
-    return(R.utils::isDirectory(pathname))
-  }
-
+# Check if a path is a real directory
+isDirectoryMock <- function(pathname) {
   pathname <- as.character(pathname)
   fileinfo <- file.info(pathname)
   if (is.na(fileinfo$isdir)) {
@@ -54,34 +51,43 @@ isDirectory <- function(pathname) {
   }
   fileinfo$isdir
 }
-
-isAbsolutePath <- function(pathname) {
+isDirectory <- function(pathname) {
   if (requireNamespace("R.utils", quietly = TRUE)) {
-    return(R.utils::isAbsolutePath(pathname))
+    return(R.utils::isDirectory(pathname))
   }
-
-  pathname <- as.character(pathname)
-  if (is.na(pathname) | !nzchar(pathname)) {
-    return(FALSE)
-  }
-  if (regexpr("^~", pathname) != -1L) {
-    return(TRUE)
-  }
-  if (regexpr("^.:(/|\\\\)", pathname) != -1L) {
-    return(TRUE)
-  }
-  FALSE
+  isDirectoryMock(pathname)
 }
 
-isFile <- function(pathname) {
-  if (requireNamespace("R.utils", quietly = TRUE)) {
-    return(R.utils::isFile(pathname))
-  }
-
+# Check if a path is a real file
+isFileMock <- function(pathname) {
   pathname <- as.character(pathname)
   fileinfo <- file.info(pathname)
   if (is.na(fileinfo$isdir)) {
     return(FALSE)
   }
-  !fileinfo$isfile
+  !(fileinfo$isdir)
+}
+isFile <- function(pathname) {
+  if (requireNamespace("R.utils", quietly = TRUE)) {
+    return(R.utils::isFile(pathname))
+  }
+  isFileMock(pathname)
+}
+
+# Check if a path is an absolute path
+isAbsolutePathMock <- function(pathname) {
+  pathname <- as.character(pathname)
+  if (is.na(pathname) | !nzchar(pathname)) {
+    return(FALSE)
+  }
+  if (regexpr("^(~|/|([a-zA-Z]:))", pathname) != -1L) {
+    return(TRUE)
+  }
+  FALSE
+}
+isAbsolutePath <- function(pathname) {
+  if (requireNamespace("R.utils", quietly = TRUE)) {
+    return(R.utils::isAbsolutePath(pathname))
+  }
+  isAbsolutePathMock(pathname)
 }
