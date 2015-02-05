@@ -166,6 +166,7 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   # Create any parameters that should be visible to the script in a new
   # environment so that we can easily attach and detach them without affecting
   # the global environment
+  params <- as.list(params)
   spinMyR_Env <- list2env(params)
   attach(spinMyR_Env)
   on.exit(detach(spinMyR_Env), add = TRUE)
