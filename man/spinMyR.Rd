@@ -5,7 +5,7 @@
 \title{Create markdown/HTML reports from R script with no hassle}
 \usage{
 spinMyR(file, wd, outDir, figDir, params = list(), verbose = FALSE,
-  chunkOpts = list(tidy = FALSE, error = FALSE))
+  chunkOpts = list(tidy = FALSE, error = FALSE), warn = TRUE)
 }
 \arguments{
 \item{file}{The path to the R script (if \code{wd} is provided, then this
@@ -29,6 +29,8 @@ For example, if the script to execute assumes that there is a variable named
 
 \item{chunkOpts}{List of chunk options to use. See \code{?knitr::opts_chunk}
 for a list of chunk options.}
+
+\item{warn}{If TRUE, then show warnings (recommended to keep this on)}
 }
 \value{
 The path to the output (invisibly).
