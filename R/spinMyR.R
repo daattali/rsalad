@@ -162,14 +162,10 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
                            knitr::opts_chunk$get("fig.path"))
   dir.create(fullFigPath, recursive = TRUE, showWarnings = FALSE)
 
-
   # Create any parameters that should be visible to the script in a new
-  # environment so that we can easily attach and detach them without affecting
-  # the global environment
+  # environment so that we can knit the script in that isolated environment
   params <- as.list(params)
   spinMyR_Env <- list2env(params)
-  attach(spinMyR_Env)
-  on.exit(detach(spinMyR_Env), add = TRUE)
 
   # Some folder cleanup when the function exists
   on.exit({
@@ -189,13 +185,13 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
 
   # This is the guts of this function - take the R script and produce HTML
   # in a few simple steps
-  #TODO use spin envir parameter instead of attach/detach?
   knitr::spin(file, format = "Rmd", knit = FALSE)
   file.rename(fileRmdOriginal,
               fileRmd)
   knitr::knit(fileRmd,
               fileMd,
-              quiet = !verbose)
+              quiet = !verbose,
+              envir = spinMyR_Env)
   markdown::markdownToHTML(fileMd,
                            fileHtml)
 
