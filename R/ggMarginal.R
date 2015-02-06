@@ -1,6 +1,17 @@
-library(ggplot2)
-library(gridExtra)
-ggMarginal <- function(p, data, x, y, type = "density", margins = "both", size = 5) {
+#' Add marginal density/histogram to ggplot2 scatterplots
+#'
+#' Create a ggplot2 scatterplot with marginal density plots/histograms or add
+#' the marginal plots to an existing scatterplot.
+#'
+#'
+#'
+#' @param x Whether to apply th layer to the X axis.
+#'
+#' @export
+ggMarginal <- function(p, data, x, y, type = "density", margins = "both",
+                       size = 5, plot = TRUE) {
+  rsaladRequire(c("ggplot2", "gridExtra"))
+
   if (missing(p)) {
     if (missing(data) | missing(x) | missing(y)) {
       stop("`data`, `x`, and `y` must be provided if `p` is not provided",
@@ -94,9 +105,13 @@ ggMarginal <- function(p, data, x, y, type = "density", margins = "both", size =
   }
   gridArgs <- c(plots, ncol = ncol, nrow = nrow,
                 widths = list(c(size, 1)), heights = list(c(1, size)))
-  suppressMessages(suppressWarnings(
-    do.call(gridExtra::grid.arrange, gridArgs)
-  ))
+
+  if (plot) {
+    plottingFx <- gridExtra::grid.arrange
+  } else {
+    plottingFx <- gridExtra::arrangeGrob
+  }
+  do.call(plottingFx, gridArgs)
 }
 
 # possible improvement: if there's a title, add the title on top of the top margin?
