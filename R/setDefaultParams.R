@@ -1,5 +1,5 @@
 #' @export
-defaultParams <- function(params) {
+setDefaultParams <- function(params) {
   params <- as.list(params)
   env <- parent.frame()
 
@@ -15,7 +15,7 @@ defaultParams <- function(params) {
 a<-function(){
   x <- 10
   print(ls.str())
-  defaultParams(c("bbA"="n"))
+  setDefaultParams(c("bbA"="n"))
   print("after")
   print(ls.str())
 }
