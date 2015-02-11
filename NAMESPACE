@@ -3,6 +3,7 @@
 export("%nin%")
 export(dfCount)
 export(dfFactorize)
+export(ggMarginal)
 export(moveBack)
 export(moveBack_)
 export(moveFront)

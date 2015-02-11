@@ -4,8 +4,9 @@
 \alias{spinMyR}
 \title{Create markdown/HTML reports from R script with no hassle}
 \usage{
-spinMyR(file, wd, outDir, figDir, params = list(), verbose = FALSE,
-  chunkOpts = list(tidy = FALSE, error = FALSE), warn = TRUE)
+spinMyR(file, wd, outDir, figDir, outSuffix, params = list(),
+  verbose = FALSE, chunkOpts = list(tidy = FALSE, error = FALSE),
+  warn = TRUE)
 }
 \arguments{
 \item{file}{The path to the R script (if \code{wd} is provided, then this
@@ -19,6 +20,11 @@ is relative to \code{wd}). Defaults to the directory containing the R script.}
 
 \item{figDir}{The name (or path) of the directory containing the figures
 generated for the markdown document. See 'Detailed Arguments'.}
+
+\item{outSuffix}{A suffix to add to the output files, can be used to
+differentiate outputs from runs with different parameters. The name of the
+output files is the name of the input script appended by \code{outSuffix},
+separated by a dash.}
 
 \item{params}{A named list of parameters to be passed on to the R script.
 For example, if the script to execute assumes that there is a variable named
@@ -91,6 +97,8 @@ if (requireNamespace("knitr", quietly = TRUE)) {
   if (requireNamespace("markdown", quietly = TRUE)) {
      spinMyR("R/script.R")
      spinMyR("script.R", wd = "R")
+     spinMyR("script.R", wd = "R", params = c(id = 10))
+     spinMyR("script.R", wd = "R", params = c(id = 10), outSuffix = "id-10")
      spinMyR("script.R", wd = "R", outDir = "reports")
      spinMyR("script.R", wd = "R", outDir = "reports",
               figDir = "figs")

@@ -222,3 +222,5 @@ spinMyR <- function(file, wd, outDir, figDir, outSuffix,
 
   invisible(outDir)
 }
+
+
