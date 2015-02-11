@@ -144,12 +144,6 @@ spinMyR <- function(file, wd, outDir, figDir, outSuffix,
   dir.create(outDir, recursive = TRUE, showWarnings = FALSE)
   outDir <- normalizePath(outDir)
 
-  if (missing(figDir)) {
-    # TODO(daattali) should the name be <input>-figs, to better support
-    # multiple markdowns in the same directory?
-    figDir <- "markdown-figs"
-  }
-
   # Get the filenames for all intermediate files
   fileNameOrig <- sub("(\\.[rR])$", "", basename(file))
   fileName <- paste0(fileNameOrig, outSuffix)
@@ -157,6 +151,10 @@ spinMyR <- function(file, wd, outDir, figDir, outSuffix,
   fileRmd <- file.path(outDir, paste0(fileName, ".Rmd"))
   fileMd <- file.path(outDir, paste0(fileName, ".md"))
   fileHtml <- file.path(outDir, paste0(fileName, ".html"))
+
+  if (missing(figDir)) {
+    figDir <- fileName
+  }
 
   # On Windows (as opposed to unix systems), file.path does not append a
   # separator at the end, so add one manually to ensure this works
