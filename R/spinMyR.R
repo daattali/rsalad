@@ -33,6 +33,10 @@
 #' is relative to \code{wd}). Defaults to the directory containing the R script.
 #' @param figDir The name (or path) of the directory containing the figures
 #' generated for the markdown document. See 'Detailed Arguments'.
+#' @param outSuffix A suffix to add to the output files, can be used to
+#' differentiate outputs from runs with different parameters. The name of the
+#' output files is the name of the input script appended by \code{outSuffix},
+#' separated by a dash.
 #' @param chunkOpts List of chunk options to use. See \code{?knitr::opts_chunk}
 #' for a list of chunk options.
 #' @param verbose If TRUE, then show the progress of knitting the document.
@@ -66,6 +70,8 @@
 #'   if (requireNamespace("markdown", quietly = TRUE)) {
 #'      spinMyR("R/script.R")
 #'      spinMyR("script.R", wd = "R")
+#'      spinMyR("script.R", wd = "R", params = c(id = 10))
+#'      spinMyR("script.R", wd = "R", params = c(id = 10), outSuffix = "id-10")
 #'      spinMyR("script.R", wd = "R", outDir = "reports")
 #'      spinMyR("script.R", wd = "R", outDir = "reports",
 #'               figDir = "figs")
@@ -74,7 +80,9 @@
 #' }
 #' @seealso \code{\link[knitr]{spin}}
 #' @seealso \code{\link[rsalad]{setupSpinMyRtest}}
-spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
+spinMyR <- function(file, wd, outDir, figDir, outSuffix,
+                    params = list(),
+                    verbose = FALSE,
                     chunkOpts = list(tidy = FALSE, error = FALSE),
                     warn = TRUE) {
   rsaladRequire(c("knitr", "markdown"))
@@ -83,8 +91,20 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
     rsaladSuggest("R.utils")
   }
 
+  if (missing(outSuffix)) {
+    outSuffix <- ""
+  } else {
+    if (is.string(outSuffix)) {
+      outSuffix <- paste0("-", outSuffix)
+    } else {
+      stop("`outSuffix` is not a valid string.",
+           call. = FALSE)
+    }
+  }
+
   if (missing(file)) {
-    stop("`file` argument was not supplied.")
+    stop("`file` argument was not supplied.",
+         call. = FALSE)
   }
 
   # Default working directory is where the user is right now
@@ -95,7 +115,8 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
     wd <- normalizePath(wd)
   })
   if (!isDirectory(wd)) {
-    stop("Invalid `wd` argument. Could not find directory: ", wd)
+    stop("Invalid `wd` argument. Could not find directory: ", wd,
+         call. = FALSE)
   }
 
   # Determine the path fo the input file, either absolute path or relative to wd
@@ -107,7 +128,8 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   })
 
   if (!isFile(file)) {
-    stop("Invalid `file` argument. Could not find input file: ", file)
+    stop("Invalid `file` argument. Could not find input file: ", file,
+         call. = FALSE)
   }
 
   inputDir <- dirname(file)
@@ -129,8 +151,9 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   }
 
   # Get the filenames for all intermediate files
-  fileName <- sub("(\\.[rR])$", "", basename(file))
-  fileRmdOriginal <- file.path(inputDir, paste0(fileName, ".Rmd"))
+  fileNameOrig <- sub("(\\.[rR])$", "", basename(file))
+  fileName <- paste0(fileNameOrig, outSuffix)
+  fileRmdOrig <- file.path(inputDir, paste0(fileNameOrig, ".Rmd"))
   fileRmd <- file.path(outDir, paste0(fileName, ".Rmd"))
   fileMd <- file.path(outDir, paste0(fileName, ".md"))
   fileHtml <- file.path(outDir, paste0(fileName, ".html"))
@@ -186,7 +209,7 @@ spinMyR <- function(file, wd, outDir, figDir, params = list(), verbose = FALSE,
   # This is the guts of this function - take the R script and produce HTML
   # in a few simple steps
   knitr::spin(file, format = "Rmd", knit = FALSE)
-  file.rename(fileRmdOriginal,
+  file.rename(fileRmdOrig,
               fileRmd)
   knitr::knit(fileRmd,
               fileMd,
