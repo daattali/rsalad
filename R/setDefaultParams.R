@@ -14,9 +14,9 @@ setDefaultParams <- function(params) {
 
 a<-function(){
   x <- 10
-  print(ls.str())
+ # print(ls.str())
   setDefaultParams(c("bbA"="n"))
-  print("after")
-  print(ls.str())
+  #print("after")
+  #print(ls.str())
 }
 a()
