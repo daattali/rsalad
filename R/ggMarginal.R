@@ -71,7 +71,7 @@ ggMarginal <- function(p, data, x, y, type = "density", margins = "both",
             axis.text.x = element_blank(),
             plot.margin = unit(c(0,0,0,0), "mm")) +
       ylab(p$labels$y) +
-      scale_x_continuous(limits = pb$panel$ranges[[1]]$x.range)
+      scale_x_continuous(limits = pb$panel$x_scales[[1]]$range$range)
   }
 
   if (margins != "x") {
@@ -87,7 +87,7 @@ ggMarginal <- function(p, data, x, y, type = "density", margins = "both",
             axis.text.y = element_blank(),
             plot.margin = unit(c(0,0,0,0), "mm")) +
       ylab(p$labels$x) +
-      scale_x_continuous(limits = pb$panel$ranges[[1]]$y.range) +
+      scale_x_continuous(limits = pb$panel$y_scales[[1]]$range$range) +
       ggtitle(p$labels$title)
   }
 
