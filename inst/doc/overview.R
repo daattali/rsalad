@@ -15,8 +15,8 @@ knitr::kable(head(fDat))
 
 ## ----show-do-notIn, results = "hold"-------------------------------------
 fDat2 <- fDat %>% filter(carrier %nin% c("UA", "DL", "AA"))
-allCarriers <- fDat %>% dplyr::select(carrier) %>% first %>% unique
-myCarriers <- fDat2 %>% dplyr::select(carrier) %>% first %>% unique
+allCarriers <- fDat %>% select(carrier) %>% first %>% unique
+myCarriers <- fDat2 %>% select(carrier) %>% first %>% unique
 
 paste0("All carriers: ", paste(allCarriers, collapse = ", "))
 paste0("My carriers: ", paste(myCarriers, collapse = ", "))
@@ -26,7 +26,7 @@ fDat2_2 <- fDat %>% filter(notIn(carrier, c("UA", "DL", "AA")))
 identical(fDat2, fDat2_2)
 
 ## ----select-cols, results = "hide"---------------------------------------
-fDat3 <- fDat2 %>% dplyr::select(carrier, flight, origin, dest)
+fDat3 <- fDat2 %>% select(carrier, flight, origin, dest)
 head(fDat3)
 
 ## ----show-data-3, echo = FALSE, results = 'asis'-------------------------
@@ -67,15 +67,6 @@ knitr::kable(head(countDat))
 ## ----keep-50-------------------------------------------------------------
 countDat2 <- slice(countDat, 1:50)
 
-## ----show-plotCount, fig.width = 8---------------------------------------
-plotCount(countDat2)
-
-## ----rotateTextX, fig.width = 8------------------------------------------
-plotCount(countDat2) + rotateTextX()
-
-## ----removeGrid, fig.width = 8-------------------------------------------
-plotCount(countDat2) + rotateTextX() + removeGridX()
-
 ## ----show-tolowerfirst---------------------------------------------------
 df <- data.frame(StudentName = character(0), ExamGrade = numeric(0))
 (colnames(df) <- tolowerfirst(colnames(df)))
@@ -86,26 +77,9 @@ setdiff(2:4, 1:5)
 setdiffsym(1:5, 2:4)
 setdiffsym(2:4, 1:5)
 
-## ----dfCount-performance, results = "hide"-------------------------------
-library(microbenchmark)
-
-# Prepare all the datasets to test on
-fDat <- nycflights13::flights
-largeIntDat <- data.frame(col = rep(1:25, 100000))
-largeCharDat <- data.frame(col = rep(letters[1:25], 100000))
-smallDat <- data.frame(col = rep(1:25, 100))
-
-# Run the benchmarking
-m <- 
-	microbenchmark(
-	  dfCount(fDat, "day"), table(fDat$day),
-	  dfCount(fDat, "dest"), table(fDat$dest),
-	  dfCount(largeIntDat, "col"), table(largeIntDat$col),
-	  dfCount(largeCharDat, "col"), table(largeCharDat$col), 
-	  dfCount(smallDat, "col"), table(smallDat$col),
-	  times = 10
-	)
-
-## ----show-dfCount-performance, echo = FALSE, results = 'asis'------------
-knitr::kable(summary(m) %>% dplyr::select(expr, min, mean, median, max, neval))
+## ----show-btwn-----------------------------------------------------------
+5 %btwn% c(1, 10)
+c(5, 20) %btwn% c(5, 10)
+rsalad::between(5, c(5, 10))
+rsalad::between(5, c(5, 10), inclusive = FALSE)
 

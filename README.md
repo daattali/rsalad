@@ -14,6 +14,13 @@ This package does not solve any one large problem, but rather has several
 functions that can prove to be useful and time-saving if you happen to need
 to perform one of the tasks implemented by rsalad.
 
+## Note
+
+All the ggplot2 related functions have graduated out of this package and are now
+available in the `ggExtra` package. `ggExtra` can be downloaded from
+[CRAN](http://cran.r-project.org/web/packages/ggExtra/index.html) or
+[GitHub](https://github.com/daattali/ggExtra).
+
 ## Installation
 
 rsalad is currently only available through GitHub and can be downloaded
@@ -27,14 +34,16 @@ devtools::install_github("daattali/rsalad")
 ## Getting started
 
 There are many different usecases for rsalad.  See the
-[overview vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/overview.md)
+[overview vignette](https://github.com/daattali/rsalad/blob/master/vignettes/overview.md)
 for a more detailed walk-through of the package or the
-[spinMyR vignette](https://github.com/daattali/rsalad/blob/master/inst/doc/spinMyR.md) for
+[spinMyR vignette](https://github.com/daattali/rsalad/blob/master/vignettes/spinMyR.md) for
 details about the `spinMyR()` function.
+
 ```
 browseVignettes("rsalad")
 vignette("overview", "rsalad")
 vignette("spinMyR", "rsalad")
+vignette("dfCountPerf", "rsalad")
 ```
 
 Alternatively, see the help file for any specific function for a complete

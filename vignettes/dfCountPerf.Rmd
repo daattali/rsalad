@@ -1,0 +1,67 @@
+---
+title: "Performance of dfCount()"
+author: "Dean Attali"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Performance of dfCount()}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+```{r setup, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(tidy = FALSE, comment = "#>")
+```
+
+## Performance of `dfCount()`
+
+After some basic testing (not extremely thorough), I believe that `dfCount()`
+performs much faster than its equivalent `table()` on large datasets, especially
+when the data is numeric.  The analysis was done with the `microbenchmark`
+package to compare the two functions on a few different datasets.
+
+```{r dfCount-performance, results = "hide"}
+library(rsalad)
+library(dplyr)
+library(microbenchmark)
+# Prepare all the datasets to test on
+fDat <- nycflights13::flights
+largeIntDat <- data.frame(col = rep(1:25, 100000))
+largeCharDat <- data.frame(col = rep(letters[1:25], 100000))
+smallDat <- data.frame(col = rep(1:25, 100))
+
+# Run the benchmarking
+m <-
+  microbenchmark(
+    dfCount(fDat, "day"), table(fDat$day),
+    dfCount(fDat, "dest"), table(fDat$dest),
+    dfCount(largeIntDat, "col"), table(largeIntDat$col),
+    dfCount(largeCharDat, "col"), table(largeCharDat$col),
+    dfCount(smallDat, "col"), table(smallDat$col),
+    times = 10
+  )
+```
+
+```{r show-dfCount-performance, echo = FALSE, results = 'asis'}
+knitr::kable(summary(m) %>% select(expr, min, mean, median, max, neval))
+```
+
+Every pair of rows corresponds to counting the same data using `dfCount()` vs
+`table()`.  The results show that:
+
+  - `dfCount()` was faster in all 4 large datasets
+- `dfCount()` was an order of magnitude faster in both cases when the data
+was numeric
+- `dfCount()` was slower on very the small dataset
+
+
+After performing this analysis, I've realized that the likely cause of the
+speed boost is due to `dfCount()` relying on `dplyr`. After making that
+realization, I found that `dplyr` also has a `count()` function, which
+performs equally fast as `dfCount()`, which further supports the hypothesis
+that the speed boost was thanks to `dplyr`. However, I still want to include
+this function in the package because it took a lot of hard work (and
+documentation!), and it also has a very differences from `dplyr::count()`. For
+example, `dplyr::count()` does not sort by default, which I find to be
+the less desired behaviour, and `dplyr::count()` does not have a
+standard-evaluation version.

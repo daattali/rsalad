@@ -42,6 +42,12 @@ rsaladSuggest <- function(pkgs) {
   )
 }
 
+deprecatedMsgGG <- function() {
+  stop(sprintf("This function is now available in the ggExtra package. Get it from GitHub - %s",
+               "https://github.com/daattali/ggExtra"),
+       call. = FALSE)
+}
+
 # Check if a path is a real directory
 isDirectoryMock <- function(pathname) {
   pathname <- as.character(pathname)

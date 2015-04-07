@@ -1,3 +1,10 @@
+# rsalad 0.0.2.1
+
+2015-04-06
+
+- **BREAKING CHANGE** All ggplot2 related functions have now moved to the `ggExtra` package
+([https://github.com/daattali/ggExtra](https://github.com/daattali/ggExtra)).
+
 # rsalad 0.0.2.0
 
 2015-01-15

@@ -1,10 +1,10 @@
 ---
-title: "spinMyR"
+title: "spinMyR()"
 author: "Dean Attali"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{spinMyR}
+  %\VignetteIndexEntry{spinMyR()}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
 ---
