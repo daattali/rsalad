@@ -1,7 +1,7 @@
 #' @export
 setDefaultParams <- function(params) {
   params <- as.list(params)
-  env <- parent.frame()
+  env <- parent.frame(1)
 
   invisible(
     lapply(names(params), function(key) {
@@ -11,12 +11,3 @@ setDefaultParams <- function(params) {
     })
   )
 }
-
-a<-function(){
-  x <- 10
- # print(ls.str())
-  setDefaultParams(c("bbA"="n"))
-  #print("after")
-  #print(ls.str())
-}
-a()
