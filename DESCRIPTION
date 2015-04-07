@@ -3,7 +3,7 @@ Title: A mix of useful R functions that are good for you
 Version: 0.0.2.1
 Authors@R: "Dean Attali <daattali@gmail.com> [aut, cre]"
 Description: Collection of functions that help with easily manipulating
-    data.frames (e.g.converting variables to factors, rearranging variables)
+    data.frames (e.g. converting variables to factors, rearranging variables)
     and improve usability and functionality of knitr::spin (e.g. better
     handling of working directories and output directories).
 URL: https://github.com/daattali/rsalad
