@@ -9,7 +9,7 @@ that instead of vegetables, rsalad provides you with R functions.
 This package was born as a result of me constantly breaking the DRY principle
 by copy-and-pasting functions from old projects into new ones. Hence, the
 functions in rsalad do not have a single common topic, but they are all either
-related to manipulating data.frames, improving ggplot2 plots, or general
+related to manipulating data.frames or general
 productivity utilities.
 
 This package does not solve any one large problem, but rather has several
