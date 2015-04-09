@@ -36,12 +36,11 @@ particularly exciting, it will show how to use `rsalad` proficiently.
 ### Load packages
 
 Before beginning any analysis using `rsalad`, the first step is to load the
-package. We'll also load `dplyr` and `ggplot2` to make the analysis more complete.
+package. We'll also load `dplyr`, a package that every analysis workflow should use.
 
 ```{r load-lib, message = FALSE, warning = FALSE}
 library(rsalad)
 library(dplyr)
-library(ggplot2)
 ```
 
 ### Load data

@@ -24,6 +24,7 @@ package to compare the two functions on a few different datasets.
 library(rsalad)
 library(dplyr)
 library(microbenchmark)
+
 # Prepare all the datasets to test on
 fDat <- nycflights13::flights
 largeIntDat <- data.frame(col = rep(1:25, 100000))
