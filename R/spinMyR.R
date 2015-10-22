@@ -45,6 +45,8 @@
 #' \code{DATASET_NAME}, then you can use
 #' \code{params = list('DATASET_NAME' = 'oct10dat')}
 #' @param warn If TRUE, then show warnings (recommended to keep this on)
+#' @param keepRmd,keepMd Should intermediate \code{Rmd} or \code{md} files be
+#'   kept (\code{TRUE}) or deleted (\code{FALSE})?
 #' @return The path to the output (invisibly).
 #' @section Possible future improvements:
 #' - Add support to only produce one of [Rmd, md, HTML]
@@ -84,7 +86,7 @@ spinMyR <- function(file, wd, outDir, figDir, outSuffix,
                     params = list(),
                     verbose = FALSE,
                     chunkOpts = list(tidy = FALSE, error = FALSE),
-                    warn = TRUE) {
+                    warn = TRUE, keepRmd = FALSE, keepMd = TRUE) {
   rsaladRequire(c("knitr", "markdown"))
 
   if (warn) {
@@ -213,8 +215,14 @@ spinMyR <- function(file, wd, outDir, figDir, outSuffix,
               fileMd,
               quiet = !verbose,
               envir = spinMyR_Env)
+  if (!keepRmd) {
+    unlink(fileRmd)
+  }
   markdown::markdownToHTML(fileMd,
                            fileHtml)
+  if (!keepMd) {
+    unlink(fileMd)
+  }
 
   message(paste0("spinMyR output in\n", outDir))
 
