@@ -1,3 +1,5 @@
+- `spinMyR()` gains new arguments `keepRmd` (default: `FALSE`) and `keepMd` (default: `TRUE`) (#15)
+
 # rsalad 0.0.2.1
 
 2015-04-06
