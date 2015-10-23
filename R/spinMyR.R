@@ -49,7 +49,7 @@
 #'   kept (\code{TRUE}) or deleted (\code{FALSE})?
 #' @return The path to the output (invisibly).
 #' @section Possible future improvements:
-#' - Add support to only produce one of [Rmd, md, HTML]
+#' - Add support to avoid producing the HTML file
 #' @section Detailed Arguments:
 #' All paths given in the arguments can be either absolute or relative.
 #'

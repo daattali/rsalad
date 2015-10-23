@@ -74,7 +74,7 @@ directly and using \code{spin} on it.
 }
 \section{Possible future improvements}{
 
-- Add support to only produce one of [Rmd, md, HTML]
+- Add support to avoid producing the HTML file
 }
 
 \section{Detailed Arguments}{
