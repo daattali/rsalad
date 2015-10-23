@@ -6,7 +6,7 @@
 \usage{
 spinMyR(file, wd, outDir, figDir, outSuffix, params = list(),
   verbose = FALSE, chunkOpts = list(tidy = FALSE, error = FALSE),
-  warn = TRUE)
+  warn = TRUE, keepRmd = FALSE, keepMd = TRUE)
 }
 \arguments{
 \item{file}{The path to the R script (if \code{wd} is provided, then this
@@ -37,6 +37,9 @@ For example, if the script to execute assumes that there is a variable named
 for a list of chunk options.}
 
 \item{warn}{If TRUE, then show warnings (recommended to keep this on)}
+
+\item{keepRmd,keepMd}{Should intermediate \code{Rmd} or \code{md} files be
+kept (\code{TRUE}) or deleted (\code{FALSE})?}
 }
 \value{
 The path to the output (invisibly).
@@ -71,7 +74,7 @@ directly and using \code{spin} on it.
 }
 \section{Possible future improvements}{
 
-- Add support to only produce one of [Rmd, md, HTML]
+- Add support to avoid producing the HTML file
 }
 
 \section{Detailed Arguments}{
