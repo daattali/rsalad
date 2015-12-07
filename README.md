@@ -2,26 +2,28 @@
 
 [![Build Status](https://travis-ci.org/daattali/rsalad.svg?branch=master)](https://travis-ci.org/daattali/rsalad)
 
-rsalad, like any other salad, is a mixture of different healthy vegetables that
+`rsalad`, like any other salad, is a mixture of different healthy vegetables that
 you should be having frequently and that can make your life much better. Except
-that instead of vegetables, rsalad provides you with R functions.
+that instead of vegetables, `rsalad` provides you with R functions.
 
 This package was born as a result of me constantly breaking the DRY principle
 by copy-and-pasting functions from old projects into new ones. Hence, the
-functions in rsalad do not have a single common topic, but they are all either
+functions in `rsalad` do not have a single common topic, but they are all either
 related to manipulating data.frames or general
 productivity utilities.
 
 This package does not solve any one large problem, but rather has several
 functions that can prove to be useful and time-saving if you happen to need
-to perform one of the tasks implemented by rsalad.
+to perform one of the tasks implemented by `rsalad`.
 
-## Note
+## Note - functions that have moved on to better packages
 
 All the ggplot2 related functions have graduated out of this package and are now
 available in the `ggExtra` package. `ggExtra` can be downloaded from
 [CRAN](http://cran.r-project.org/web/packages/ggExtra/index.html) or
 [GitHub](https://github.com/daattali/ggExtra).
+
+The flagship function `spinMyR()` has graduated into its own package, where it can be much more robust.  It is available in the [`ezknitr`](https://github.com/daattali/ezknitr) package.
 
 ## Installation
 
@@ -37,14 +39,10 @@ devtools::install_github("daattali/rsalad")
 
 There are many different usecases for rsalad.  See the
 [overview vignette](https://github.com/daattali/rsalad/blob/master/vignettes/overview.md)
-for a more detailed walk-through of the package or the
-[spinMyR vignette](https://github.com/daattali/rsalad/blob/master/vignettes/spinMyR.md) for
-details about the `spinMyR()` function.
 
 ```
 browseVignettes("rsalad")
 vignette("overview", "rsalad")
-vignette("spinMyR", "rsalad")
 vignette("dfCountPerf", "rsalad")
 ```
 
@@ -53,17 +51,6 @@ detailed explanation of the function. For example `?rsalad::moveFront`.
 
 Below is a very brief introduction to the functions in rsalad. The package
 must first be loaded for the examples to work `library("rsalad")`.
-
-### `spinMyR()`: create markdown/HTML reports from R scripts with no hassle
-`spinMyR()` is an improvement on `knitr::spin`. `spinMyR` makes it
-easy to use spin on R scripts that require a certain working directory that is
-not the script's directory, while allowing the script to still function
-on its own.  `spinMyR` also lets you select where to output the results, and
-adds several more features.
-
-```
-spinMyR("script.R", wd = "R", outDir = "reports", figDir = "figs")
-```
 
 ### `dfFactorize()`: convert data.frame columns to factors
 Convert character columns in a data.frame to factors.

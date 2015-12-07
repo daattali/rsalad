@@ -215,11 +215,6 @@ package.
 
 ## Other functions
 
-#### `spinMyR()`: create markdown/HTML reports from R scripts with no hassle
-See the [spinMyR vignette](spinMyR.md) for information about this
-function.
-
-
 #### `tolowerfirst()`: convert first character to lower case
 
 `rsalad` provides another function that can sometimes become handy.

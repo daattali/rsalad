@@ -1,3 +1,11 @@
+# rsalad 0.1.0
+
+2015-12-07
+
+- **BREAKING CHANGE** `spinMyR()` has moved to the `ezknitr` package
+([https://github.com/daattali/ezknitr](https://github.com/daattali/ezknitr)).
+
+
 # rsalad 0.0.2.2
 
 2015-10-23
