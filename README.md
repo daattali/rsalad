@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/daattali/rsalad.svg?branch=master)](https://travis-ci.org/daattali/rsalad)
 
+> *Copyright 2015 [Dean Attali](http://deanattali.com). Licensed under the MIT license.*
+
 `rsalad`, like any other salad, is a mixture of different healthy vegetables that
 you should be having frequently and that can make your life much better. Except
 that instead of vegetables, `rsalad` provides you with R functions.
